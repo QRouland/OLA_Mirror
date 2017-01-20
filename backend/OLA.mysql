@@ -1,0 +1,150 @@
+# Script de creation de la structure de la base OLA (a executer en root)
+-- INSTALLER LA DERNIERE VERSION DE MARIADB
+-- LANCER CE SCRIPT AVEC LA COMMANDE : mysql -u root < ola_export.mysql
+
+# Create schemas and users
+CREATE DATABASE IF NOT EXISTS OLA CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
+CREATE USER IF NOT EXISTS 'ola'@'localhost';
+SET PASSWORD FOR 'ola'@'localhost' = PASSWORD('ola');
+GRANT SELECT, INSERT, UPDATE, DELETE ON OLA.* TO 'ola'@'localhost';
+
+USE OLA;
+
+# Create tables
+CREATE TABLE IF NOT EXISTS SETTINGS
+(
+    `key` VARCHAR(128) NOT NULL,
+    `value` VARCHAR(256) NOT NULL,
+    description VARCHAR(256),
+    PRIMARY KEY(`key`)
+) ENGINE = INNODB;
+
+CREATE TABLE IF NOT EXISTS `GROUP`
+(
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(128) NOT NULL UNIQUE,
+    `year` CHARACTER(4) NOT NULL,
+    class_short VARCHAR(128) NOT NULL,
+    class_long VARCHAR(512),
+    department VARCHAR(256),
+    resp_id BIGINT,
+    ressources_dir VARCHAR(512),
+    PRIMARY KEY(id)
+) ENGINE = INNODB;
+
+CREATE TABLE IF NOT EXISTS `USER`
+(
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    `login` VARCHAR(128) NOT NULL,
+    `role` INT NOT NULL,
+    email VARCHAR(256) NOT NULL,
+    phone VARCHAR(15),
+    PRIMARY KEY(id)
+) ENGINE = INNODB;
+
+CREATE TABLE IF NOT EXISTS GROUP_CONTENT
+(
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    group_id BIGINT NOT NULL,
+    student_id BIGINT NOT NULL,
+    ptutor_id BIGINT NOT NULL,
+    PRIMARY KEY(id)
+) ENGINE = INNODB;
+
+CREATE TABLE IF NOT EXISTS LIVRET
+(
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    group_content_id BIGINT,
+    etutor_name VARCHAR(128) NOT NULL,
+    etutor_email VARCHAR(256) NOT NULL,
+    etutor_phone VARCHAR(15) NOT NULL,
+    company_name VARCHAR(256) NOT NULL,
+    company_address VARCHAR(512) NOT NULL,
+    contract_type INT NOT NULL,
+    contract_start DATE NOT NULL,
+    contract_end DATE NOT NULL,
+    ressources_dir VARCHAR(512),
+    opened TINYINT(1) NOT NULL,
+    expire DATE NOT NULL,
+    PRIMARY KEY(id)
+) ENGINE = INNODB;
+
+CREATE TABLE IF NOT EXISTS PERIOD
+(
+    livret_id BIGINT NOT NULL,
+    num INT NOT NULL,
+    `type` INT,
+    `start` DATE,
+    `end` DATE,
+    student_desc TEXT,
+    etutor_desc TEXT,
+    ressources_dir VARCHAR(512),
+    PRIMARY KEY(livret_id, num)
+) ENGINE = INNODB;
+
+CREATE TABLE IF NOT EXISTS HASHTABLE
+(
+    token VARCHAR(255) NOT NULL,
+    exipre DATE NOT NULL,
+    livret BIGINT NOT NULL,
+    period INT NOT NULL,
+    PRIMARY KEY(token)
+) ENGINE = INNODB;
+
+
+# Create FKs
+ALTER TABLE `GROUP`
+    ADD    FOREIGN KEY (resp_id)
+    REFERENCES `USER`(id)
+;
+    
+ALTER TABLE GROUP_CONTENT
+    ADD    FOREIGN KEY (group_id)
+    REFERENCES `GROUP`(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+;
+    
+ALTER TABLE GROUP_CONTENT
+    ADD    FOREIGN KEY (student_id)
+    REFERENCES `USER`(id)
+;
+    
+ALTER TABLE GROUP_CONTENT
+    ADD    FOREIGN KEY (ptutor_id)
+    REFERENCES `USER`(id)
+;
+
+ALTER TABLE LIVRET
+    ADD    FOREIGN KEY (group_content_id)
+    REFERENCES GROUP_CONTENT(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+;
+    
+ALTER TABLE LIVRET
+    ADD    FOREIGN KEY (group_content_id)
+    REFERENCES GROUP_CONTENT(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+;
+    
+ALTER TABLE HASHTABLE
+    ADD    FOREIGN KEY (livret)
+    REFERENCES PERIOD(livret_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+;
+    
+ALTER TABLE HASHTABLE
+    ADD    FOREIGN KEY (livret, period)
+    REFERENCES PERIOD(livret_id, num)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+;
+
+# Create Indexes
+CREATE INDEX tutor_email ON LIVRET(etutor_email);
+CREATE INDEX user_login ON `USER`(`login`);

@@ -6,7 +6,7 @@ BackEnd pour l'application du livret de l'altrenant
 
 Required :
 
-* Python >= 3.4 with pip (Un VirtualEnv est conseillé !)
+* python >= 3.4 with pip (Un VirtualEnv est conseillé !)
 
 ## Python
 
@@ -25,6 +25,10 @@ Installer les dépendances via pip :
     pip install -r requirements/common.txt
 ```
 
+Installer les dépendances via pip pour les tests :
+```
+    pip install -r requirements/test.txt
+```
 
 
 ## Run the App

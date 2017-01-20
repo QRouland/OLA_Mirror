@@ -1,10 +1,11 @@
+import importlib
 from datetime import timedelta
 
 from flask import Flask, session
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
-
-import importlib
+from sqlalchemy import create_engine
+from sqlalchemy.ext.automap import automap_base
 
 
 def configure_app(config="prod"):
@@ -32,6 +33,9 @@ configure_app()
 
 # SQLAlchemy
 db = SQLAlchemy(app)
+Base = automap_base()
+engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
+Base.prepare(engine, reflect=True)
 
 # RestFul Flask
 api = Api(app)

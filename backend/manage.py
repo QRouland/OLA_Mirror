@@ -1,15 +1,13 @@
 import argparse
+import importlib
 import os
-
 import unittest
 import warnings
 
-from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Command
 from flask_script import prompt_bool
 
-from backend.app.core import app, db, configure_app
-
+from backend.app.core import configure_app
 
 warnings.simplefilter('ignore')
 
@@ -24,15 +22,14 @@ if args.debug:
 if args.test:
     configure_app(config="test")
 
-migrate = Migrate(app, db)
+db = importlib.import_module("db", "backend.app.core")
+app = importlib.import_module("app", "backend.app.core")
+
 manager = Manager(app)
 manager.add_option("-d", "--debug",
                    action="store_true", dest="debug", required=False)
 manager.add_option("-t", "--test",
                    action="store_true", dest="test", required=False)
-
-# migrations : python manage.py db to show usage
-manager.add_command('db', MigrateCommand)
 
 
 class SeedDB(Command):
@@ -54,6 +51,17 @@ class DropDB(Command):
 
 
 manager.add_command('dropdb', DropDB())
+
+
+class CheckDB(Command):
+    """Print database structure"""
+
+    def run(self):
+        print("List of parsed tables:")
+        print(db.metadata.tables.keys())
+
+
+manager.add_command('checkdb', CheckDB())
 
 
 class RunTests(Command):

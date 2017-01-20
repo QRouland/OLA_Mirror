@@ -6,13 +6,13 @@ BackEnd pour l'application du livret de l'altrenant
 
 Required :
 
-* python >= 3.4 with pip (Un VirtualEnv est conseillé !)
-* bower >= 1.8
+* Python >= 3.4 with pip (Un VirtualEnv est conseillé !)
 
 ## Python
 
-Si vous utiliser un virtualenv:
-Creer et activerle virtualenv :
+Si vous utilisez un virtualenv :
+
+Créer et activer le virtualenv :
 
 ```
     cd backend
@@ -32,7 +32,7 @@ Installer les dépendances via pip :
 ### Fichier Configuration
 
 Dans app/config.py:
-* Configuration les parametres de la base de données
+* Configuration les paramètres de la base de données
 * Changer la SECRET_KEY en production
 
 ### Init App
@@ -46,7 +46,8 @@ See command available :
 ```
 
 #### Init db
-Installet la derniere version de mariadb
+Installez la dernière version de MariaDB:
+
 Lancer le script :
 ```
     mysql -u root < ola_export.mysql

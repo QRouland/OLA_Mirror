@@ -35,22 +35,15 @@ Installer les dépendances via pip pour les tests :
 
 ### Fichier Configuration
 
-Dans app/config.py:
-* Configuration les paramètres de la base de données
-* Changer la SECRET_KEY en production
+Copier le fichier app/config.py.example en app/config.py et configurer avec vos parametres
 
-### Init App
+Principalement:
+* Configuration des paramètres de la base de données
+* Changement de la SECRET_KEY en production
 
-First you need to create the db and seed it with an admin user (admin@admin.com/admin).
 
-Migration database is handle via flask-migrate using alembic. 
-See command available : 
-```
-    python manage.py db
-```
-
-#### Init db
-Installez la dernière version de MariaDB:
+### Init db
+Installez la dernière version de MariaDB.
 
 Lancer le script :
 ```

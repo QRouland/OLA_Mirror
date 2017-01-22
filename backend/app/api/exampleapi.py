@@ -15,4 +15,4 @@ class SomeApi(Resource):
         return {'somedelete': 'somedeletedata'}, 204
 
     def put(self, id=None):
-        return {'someput': 'someputdata'}, 204
+        return {'someput': 'someputdata'}, 201

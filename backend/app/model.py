@@ -1,4 +1,4 @@
-from backend.app.core import Base
+from app.core import Base
 
 USER = Base.classes.user
 SETTINGS = Base.classes.settings

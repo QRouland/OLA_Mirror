@@ -29,3 +29,6 @@ pip-selfcheck.json
 htmlcov/
 .coverage
 coverage.xml
+
+#Config files
+config.py

@@ -7,7 +7,7 @@ import warnings
 from flask_script import Manager, Command
 from flask_script import prompt_bool
 
-from backend.app.core import configure_app
+from app.config import Config
 
 warnings.simplefilter('ignore')
 
@@ -18,14 +18,15 @@ group.add_argument("-t", "--test", action="store_true")
 args, _ = parser.parse_known_args()
 
 if args.debug:
-    configure_app(config="debug")
-if args.test:
-    configure_app(config="test")
+    Config.configure_app(config="debug")
+elif args.test:
+    Config.configure_app(config="test")
+else:
+    Config.configure_app(config="prod")
 
-db = importlib.import_module("db", "backend.app.core")
-app = importlib.import_module("app", "backend.app.core")
+core = importlib.import_module("app.core")
 
-manager = Manager(app)
+manager = Manager(core.app)
 manager.add_option("-d", "--debug",
                    action="store_true", dest="debug", required=False)
 manager.add_option("-t", "--test",
@@ -58,7 +59,7 @@ class CheckDB(Command):
 
     def run(self):
         print("List of parsed tables:")
-        print(db.metadata.tables.keys())
+        print(core.db.metadata.tables.keys())
 
 
 manager.add_command('checkdb', CheckDB())
@@ -67,7 +68,7 @@ manager.add_command('checkdb', CheckDB())
 class RunTests(Command):
     """Seed the db """
     def run(self):
-        configure_app(config="test")
+        Config.configure_app(config="test")
         os.system("python manage.py -t db downgrade base")
         os.system("python manage.py -t db upgrade")
         test_loader = unittest.defaultTestLoader

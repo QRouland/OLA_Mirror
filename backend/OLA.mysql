@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `USER`
     PRIMARY KEY(id)
 ) ENGINE = INNODB;
 
-CREATE TABLE IF NOT EXISTS GROUP_CONTENT
+CREATE TABLE IF NOT EXISTS TUTORSHIP
 (
     id BIGINT NOT NULL AUTO_INCREMENT,
     group_id BIGINT NOT NULL,
@@ -55,19 +55,19 @@ CREATE TABLE IF NOT EXISTS GROUP_CONTENT
 
 CREATE TABLE IF NOT EXISTS LIVRET
 (
-    id BIGINT NOT NULL AUTO_INCREMENT,
-    group_content_id BIGINT,
-    etutor_name VARCHAR(128) NOT NULL,
-    etutor_email VARCHAR(256) NOT NULL,
-    etutor_phone VARCHAR(15) NOT NULL,
-    company_name VARCHAR(256) NOT NULL,
-    company_address VARCHAR(512) NOT NULL,
-    contract_type INT NOT NULL,
-    contract_start DATE NOT NULL,
-    contract_end DATE NOT NULL,
-    ressources_dir VARCHAR(512),
-    opened TINYINT(1) NOT NULL,
-    expire DATE NOT NULL,
+  id              BIGINT NOT NULL AUTO_INCREMENT,
+  tutorship_id    BIGINT,
+  etutor_name     VARCHAR(128) NOT NULL,
+  etutor_email    VARCHAR(256) NOT NULL,
+  etutor_phone    VARCHAR(15) NOT NULL,
+  company_name    VARCHAR(256) NOT NULL,
+  company_address VARCHAR(512) NOT NULL,
+  contract_type   INT NOT NULL,
+  contract_start  DATE NOT NULL,
+  contract_end    DATE NOT NULL,
+  ressources_dir  VARCHAR(512),
+  opened          TINYINT(1) NOT NULL,
+  expire          DATE NOT NULL,
     PRIMARY KEY(id)
 ) ENGINE = INNODB;
 
@@ -86,9 +86,9 @@ CREATE TABLE IF NOT EXISTS PERIOD
 
 CREATE TABLE IF NOT EXISTS HASHTABLE
 (
-    token VARCHAR(255) NOT NULL,
-    exipre DATE NOT NULL,
-    period INT NOT NULL,
+  token     VARCHAR(255) NOT NULL,
+  exipre    DATE         NOT NULL,
+  period_id BIGINT       NOT NULL,
     PRIMARY KEY(token)
 ) ENGINE = INNODB;
 
@@ -98,34 +98,34 @@ ALTER TABLE `GROUP`
     ADD    FOREIGN KEY (resp_id)
     REFERENCES `USER`(id)
 ;
-    
-ALTER TABLE GROUP_CONTENT
+
+ALTER TABLE TUTORSHIP
     ADD    FOREIGN KEY (group_id)
     REFERENCES `GROUP`(id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 ;
-    
-ALTER TABLE GROUP_CONTENT
+
+ALTER TABLE TUTORSHIP
     ADD    FOREIGN KEY (student_id)
     REFERENCES `USER`(id)
 ;
-    
-ALTER TABLE GROUP_CONTENT
+
+ALTER TABLE TUTORSHIP
     ADD    FOREIGN KEY (ptutor_id)
     REFERENCES `USER`(id)
 ;
 
 ALTER TABLE LIVRET
-    ADD    FOREIGN KEY (group_content_id)
-    REFERENCES GROUP_CONTENT(id)
+  ADD FOREIGN KEY (tutorship_id)
+REFERENCES TUTORSHIP (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 ;
     
 ALTER TABLE LIVRET
-    ADD    FOREIGN KEY (group_content_id)
-    REFERENCES GROUP_CONTENT(id)
+  ADD FOREIGN KEY (tutorship_id)
+REFERENCES TUTORSHIP (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 ;
@@ -137,7 +137,7 @@ REFERENCES LIVRET (id)
     ON UPDATE CASCADE;
     
 ALTER TABLE HASHTABLE
-    ADD FOREIGN KEY (period)
+  ADD FOREIGN KEY (period_id)
 REFERENCES PERIOD (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE

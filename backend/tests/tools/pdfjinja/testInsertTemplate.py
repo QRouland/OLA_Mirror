@@ -3,7 +3,10 @@ import os
 import unittest
 from io import BytesIO
 
+from pathlib import Path
 from pdfjinja import PdfJinja
+
+from app.tools.pdfjinja.insertTemplate import remplirTemplate
 
 
 class insertTemplateTestCase(unittest.TestCase):
@@ -36,11 +39,14 @@ class insertTemplateTestCase(unittest.TestCase):
         del self.pdfjinja
 
     def test_render(self):
+        remplirTemplate(self.datadir,"sample.pdf",self.datadir,"output.pdf",self.data)
         output = self.pdfjinja(self.data)
         outfile = BytesIO()
         output.write(outfile)
         outfile.seek(0)
         self.assertTrue(len(outfile.read()) > 0, "Output PDF is not empty.")
+        self.assertTrue(Path(self.datadir+"/output.pdf").is_file(),"Pdf généré inexistant")
+        os.remove(self.datadir+"/output.pdf")
 
 
 if __name__ == '__main__':

@@ -1,13 +1,12 @@
 import importlib
 from datetime import timedelta
 
+from app.config import Config
 from flask import Flask, session
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.ext.automap import automap_base
-from app.config import Config
-
 
 # initialization Flask
 app = Flask(__name__)

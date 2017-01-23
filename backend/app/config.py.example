@@ -35,7 +35,7 @@ class Prod(Config):
 class Debug(Config):
     DEBUG = True
     SESSION_COOKIE_SECURE = False
-    SQLALCHEMY_DATABASE_URI = 'mysql://ola:ola@localhost/OLA'
+    SQLALCHEMY_DATABASE_URI = 'mysql://ola:XXX@localhost/OLA'
 
 
 class Test(Config):

@@ -47,7 +47,7 @@ Installez la dernière version de MariaDB.
 
 Lancer le script :
 ```
-    mysql -u root < ola_export.mysql
+    mysql -u root < OLA.mysql
 ```
 
 

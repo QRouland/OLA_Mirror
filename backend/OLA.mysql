@@ -1,6 +1,6 @@
 # Script de creation de la structure de la base OLA (a executer en root)
 -- INSTALLER LA DERNIERE VERSION DE MARIADB
--- LANCER CE SCRIPT AVEC LA COMMANDE : mysql -u root < ola_export.mysql
+-- LANCER CE SCRIPT AVEC LA COMMANDE : mysql -u root < OLA.mysql
 
 # Create schemas and users
 CREATE DATABASE IF NOT EXISTS OLA CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -73,22 +73,21 @@ CREATE TABLE IF NOT EXISTS LIVRET
 
 CREATE TABLE IF NOT EXISTS PERIOD
 (
-    livret_id BIGINT NOT NULL,
-    num INT NOT NULL,
-    `type` INT,
-    `start` DATE,
-    `end` DATE,
-    student_desc TEXT,
-    etutor_desc TEXT,
+    id             BIGINT NOT NULL AUTO_INCREMENT,
+    livret_id      BIGINT NOT NULL,
+    `type`         INT,
+    `start`        DATE,
+    `end`          DATE,
+    student_desc   TEXT,
+    etutor_desc    TEXT,
     ressources_dir VARCHAR(512),
-    PRIMARY KEY(livret_id, num)
+    PRIMARY KEY (id)
 ) ENGINE = INNODB;
 
 CREATE TABLE IF NOT EXISTS HASHTABLE
 (
     token VARCHAR(255) NOT NULL,
     exipre DATE NOT NULL,
-    livret BIGINT NOT NULL,
     period INT NOT NULL,
     PRIMARY KEY(token)
 ) ENGINE = INNODB;
@@ -130,17 +129,16 @@ ALTER TABLE LIVRET
     ON DELETE CASCADE
     ON UPDATE CASCADE
 ;
-    
-ALTER TABLE HASHTABLE
-    ADD    FOREIGN KEY (livret)
-    REFERENCES PERIOD(livret_id)
+
+ALTER TABLE PERIOD
+    ADD FOREIGN KEY (livret_id)
+REFERENCES LIVRET (id)
     ON DELETE CASCADE
-    ON UPDATE CASCADE
-;
+    ON UPDATE CASCADE;
     
 ALTER TABLE HASHTABLE
-    ADD    FOREIGN KEY (livret, period)
-    REFERENCES PERIOD(livret_id, num)
+    ADD FOREIGN KEY (period)
+REFERENCES PERIOD (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 ;

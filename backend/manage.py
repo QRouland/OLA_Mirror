@@ -4,9 +4,10 @@ import os
 import unittest
 import warnings
 
-from app.config import Config
 from flask_script import Manager, Command
 from flask_script import prompt_bool
+
+from app.config import Config
 
 warnings.simplefilter('ignore')
 
@@ -61,10 +62,11 @@ class CheckDB(Command):
         print("List of parsed tables:")
         print(core.meta.tables.keys())
         query = model.SETTINGS.select()
+        # query = model.SETTINGS.select(model.SETTINGS.c.key == 'content_basedir')
         result = query.execute()
         print("\nSETTINGS content :")
         for res in result:
-            print(res.key + " = " + res.value)
+            print(res.key + " = " + res.value + " -> " + res.description)
 
 
 manager.add_command('checkdb', CheckDB())

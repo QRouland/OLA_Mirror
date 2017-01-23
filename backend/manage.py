@@ -69,8 +69,6 @@ class RunTests(Command):
     """Seed the db """
     def run(self):
         Config.configure_app(config="test")
-        os.system("python manage.py -t db downgrade base")
-        os.system("python manage.py -t db upgrade")
         test_loader = unittest.defaultTestLoader
         test_runner = unittest.TextTestRunner()
         test_suite = test_loader.discover('tests')

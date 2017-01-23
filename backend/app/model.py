@@ -1,9 +1,10 @@
-from app.core import Base
+from app.core import meta
+from sqlalchemy import Table
 
-USER = Base.classes.user
-SETTINGS = Base.classes.settings
-HASHTABLE = Base.classes.hashtable
-GROUP = Base.classes.group
-GROUP_CONTENT = Base.classes.group_content
-PERIOD = Base.classes.period
-LIVRET = Base.classes.livret
+USER = Table('USER', meta, autoload=False)
+SETTINGS = Table('SETTINGS', meta, autoload=False)
+HASHTABLE = Table('HASHTABLE', meta, autoload=False)
+GROUP = Table('GROUP', meta, autoload=False)
+TUTORSHIP = Table('TUTORSHIP', meta, autoload=False)
+PERIOD = Table('PERIOD', meta, autoload=False)
+LIVRET = Table('LIVRET', meta, autoload=False)

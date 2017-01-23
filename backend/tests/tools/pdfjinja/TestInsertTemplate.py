@@ -5,7 +5,7 @@ from pathlib import Path
 
 from pdfjinja import PdfJinja
 
-from app.tools.insertTemplate import remplir_template
+from app.tools.InsertTemplate import remplir_template
 
 
 class insertTemplateTestCase(unittest.TestCase):

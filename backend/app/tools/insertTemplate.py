@@ -5,7 +5,8 @@ import os
 
 from pdfjinja import PdfJinja
 
-def remplirTemplate (dirname_template, pdf_template, dirname_output_file, pdf_output,dictionnaire):
+
+def remplir_template(dirname_template, pdf_template, dirname_output_file, pdf_output, dictionnaire):
     """
     Fonction qui permet de remplir un pdf template
     :param dirname_template: chemin du fichier de template

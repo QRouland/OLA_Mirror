@@ -1,12 +1,11 @@
-import json
 import os
 import unittest
 from io import BytesIO
-
 from pathlib import Path
+
 from pdfjinja import PdfJinja
 
-from app.tools.pdfjinja.insertTemplate import remplirTemplate
+from app.tools.insertTemplate import remplir_template
 
 
 class insertTemplateTestCase(unittest.TestCase):
@@ -39,7 +38,7 @@ class insertTemplateTestCase(unittest.TestCase):
         del self.pdfjinja
 
     def test_render(self):
-        remplirTemplate(self.datadir,"sample.pdf",self.datadir,"output.pdf",self.data)
+        remplir_template(self.datadir, "sample.pdf", self.datadir, "output.pdf", self.data)
         output = self.pdfjinja(self.data)
         outfile = BytesIO()
         output.write(outfile)

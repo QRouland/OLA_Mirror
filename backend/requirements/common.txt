@@ -3,3 +3,4 @@ flask-script < 2.1
 flask-sqlalchemy < 2.2
 flask-restful < 0.4
 mysqlclient < 1.4
+pdfjinja < 1.1

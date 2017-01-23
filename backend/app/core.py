@@ -5,6 +5,7 @@ from app.config import Config
 from flask import Flask, session
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import MetaData
 from sqlalchemy import create_engine
 from sqlalchemy.ext.automap import automap_base
 
@@ -26,6 +27,7 @@ db = SQLAlchemy(app)
 Base = automap_base()
 engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
 Base.prepare(engine, reflect=True)
+meta = MetaData(engine, True)
 
 # RestFul Flask
 api = Api(app)

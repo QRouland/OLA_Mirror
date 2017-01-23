@@ -4,10 +4,9 @@ import os
 import unittest
 import warnings
 
+from app.config import Config
 from flask_script import Manager, Command
 from flask_script import prompt_bool
-
-from app.config import Config
 
 warnings.simplefilter('ignore')
 
@@ -25,6 +24,7 @@ else:
     Config.configure_app(config="prod")
 
 core = importlib.import_module("app.core")
+model = importlib.import_module("backend.app.model")
 
 manager = Manager(core.app)
 manager.add_option("-d", "--debug",
@@ -59,7 +59,12 @@ class CheckDB(Command):
 
     def run(self):
         print("List of parsed tables:")
-        print(core.db.metadata.tables.keys())
+        print(core.meta.tables.keys())
+        query = model.SETTINGS.select()
+        result = query.execute()
+        print("\nSETTINGS content :")
+        for res in result:
+            print(res.key + " = " + res.value)
 
 
 manager.add_command('checkdb', CheckDB())

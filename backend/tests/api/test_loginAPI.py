@@ -3,19 +3,37 @@ import unittest
 from flask import json
 
 from app.core import app
-from app.model import USER, getUser
+from app.model import USER, getUser, GROUP, TUTORSHIP, tutorship_class, group_class, user_class
 
 
 class AuthTestCase(unittest.TestCase):
+    uid = None
+    gid = None
+    tid = None
+
     @classmethod
     def setUpClass(cls):
         if getUser(login="admin") is None:
             query = USER.insert().values(login="admin", email="admin@admin.com", role="4", phone="00.00.00.00.00")
-            query.execute()
+            res = query.execute()
+            cls.uid = res.lastrowid
+            query = GROUP.insert().values(name="test", year="2017", class_long="classe toto", class_short="toto",
+                                          department="plop", ressources_dir="/plop/toto", resp_id=cls.uid)
+            res = query.execute()
+            cls.gid = res.lastrowid
+            query = TUTORSHIP.insert().values(student_id=cls.uid, ptutor_id=cls.uid, group_id=cls.gid)
+            res = query.execute()
+            cls.tid = res.lastrowid
 
     @classmethod
     def tearDownClass(cls):
-        pass
+        if cls.uid is not None and cls.gid is not None and cls.tid is not None:
+            query = TUTORSHIP.delete().where(tutorship_class.id == cls.tid)
+            query.execute()
+            query = GROUP.delete().where(group_class.id == cls.gid)
+            query.execute()
+            query = USER.delete().where(user_class.id == cls.uid)
+            query.execute()
 
     def setUp(self):
         self.app = app.test_client()

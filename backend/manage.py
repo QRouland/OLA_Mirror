@@ -67,6 +67,7 @@ class CheckDB(Command):
         print("\nSETTINGS content :")
         for res in result:
             print(res.key + " = " + res.value + " -> " + res.description)
+        model.getUser(id=1)
 
 
 manager.add_command('checkdb', CheckDB())

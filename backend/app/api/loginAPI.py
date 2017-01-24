@@ -19,12 +19,9 @@ class LoginAPI(Resource):
         userInfo = self.getUserInfoFromCAS(args['login'], args['password'])
 
         if userInfo is not None:
-            query = USER.select(USER.c.login == userInfo["login"])
-            res = query.execute()
-            user = res.first()
-            # TODO : check si le user fait partie d'un group actif
-            if user is not None:
-                session['user'] = user.id
+            user = getUser(login=userInfo['login'])
+            if user is not None and isUserAllowed(user["id"]):
+                session['user'] = user
                 return {'AUTH_RESULT': 'OK'}, 200
             else:
                 return {'AUTH_RESULT': 'NOT_ALLOWED'}, 403

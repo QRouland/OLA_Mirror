@@ -3,12 +3,15 @@ import unittest
 from flask import json
 
 from app.core import app
+from app.model import USER, getUser
 
 
 class AuthTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        pass
+        if getUser(login="admin") is None:
+            query = USER.insert().values(login="admin", email="admin@admin.com", role="4", phone="00.00.00.00.00")
+            query.execute()
 
     @classmethod
     def tearDownClass(cls):

@@ -1,6 +1,6 @@
 from flask import session
-from flask.ext.restful.reqparse import RequestParser
 from flask_restful import Resource
+from flask_restful.reqparse import RequestParser
 
 from app.model import *
 
@@ -20,14 +20,24 @@ class LoginAPI(Resource):
 
         if userInfo is not None:
             query = USER.select(USER.c.login == userInfo["login"])
+            res = query.execute()
+            user = res.first()
             # TODO : check si le user fait partie d'un group actif
-            if query.count() == 1:
-                session['user'] = query.select().execute().first()
+            if user is not None:
+                session['user'] = user.id
                 return {'AUTH_RESULT': 'OK'}, 200
             else:
                 return {'AUTH_RESULT': 'NOT_ALLOWED'}, 403
         else:
             return {'AUTH_RESULT': 'AUTHENTICATION_FAILED'}, 401
 
+    def delete(self):
+        session['user'] = None
+        return {'AUTH_RESULT': 'OK'}, 200
+
     def getUserInfoFromCAS(self, login, password):
-        pass
+        # TODO : A implémenter
+        if (login == "admin" or login == "toto") and password == login:
+            return {"login": login}
+        else:
+            return None

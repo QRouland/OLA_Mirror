@@ -25,7 +25,7 @@ else:
     Config.configure_app(config="prod")
 
 core = importlib.import_module("app.core")
-model = importlib.import_module("backend.app.model")
+model = importlib.import_module("app.model")
 
 manager = Manager(core.app)
 manager.add_option("-d", "--debug",
@@ -75,7 +75,6 @@ manager.add_command('checkdb', CheckDB())
 class RunTests(Command):
     """Seed the db """
     def run(self):
-        Config.configure_app(config="test")
         test_loader = unittest.defaultTestLoader
         test_runner = unittest.TextTestRunner()
         test_suite = test_loader.discover('tests')

@@ -1,7 +1,8 @@
+import unittest
+
 from flask import json
 
-from backend.app.core import app
-import unittest
+from app.core import app
 
 
 class AuthTestCase(unittest.TestCase):

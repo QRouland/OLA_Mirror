@@ -76,6 +76,8 @@ manager.add_command('checkdb', CheckDB())
 class RunTests(Command):
     """Seed the db """
     def run(self):
+        if not args.test:
+            raise Exception("Les tests doivent etre lancés en config de test")
         test_loader = unittest.defaultTestLoader
         test_runner = unittest.TextTestRunner()
         test_suite = test_loader.discover('tests')

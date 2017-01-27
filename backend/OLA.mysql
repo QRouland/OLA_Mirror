@@ -23,14 +23,15 @@ CREATE TABLE IF NOT EXISTS SETTINGS
 
 CREATE TABLE IF NOT EXISTS `GROUP`
 (
-    id BIGINT NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(128) NOT NULL UNIQUE,
-    `year` CHARACTER(4) NOT NULL,
-    class_short VARCHAR(128) NOT NULL,
-    class_long VARCHAR(512),
-    department VARCHAR(256),
-    resp_id BIGINT,
-    ressources_dir VARCHAR(512),
+  id             BIGINT NOT NULL AUTO_INCREMENT,
+  `name`         VARCHAR(128) NOT NULL UNIQUE,
+  `year`         CHARACTER(4) NOT NULL,
+  class_short    VARCHAR(128) NOT NULL,
+  class_long     VARCHAR(512),
+  department     VARCHAR(256),
+  resp_id        BIGINT,
+  sec_id         BIGINT,
+  ressources_dir VARCHAR(512),
     PRIMARY KEY(id)
 ) ENGINE = INNODB;
 
@@ -96,7 +97,11 @@ CREATE TABLE IF NOT EXISTS HASHTABLE
 # Create FKs
 ALTER TABLE `GROUP`
     ADD    FOREIGN KEY (resp_id)
-    REFERENCES `USER`(id)
+    REFERENCES `USER`(id);
+
+ALTER TABLE `GROUP`
+  ADD FOREIGN KEY (sec_id)
+REFERENCES `USER` (id)
 ;
 
 ALTER TABLE TUTORSHIP

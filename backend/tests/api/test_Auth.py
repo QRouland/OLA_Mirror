@@ -18,7 +18,8 @@ class AuthTestCase(unittest.TestCase):
             res = query.execute()
             cls.uid = res.lastrowid
             query = GROUP.insert().values(name="test", year="2017", class_long="classe toto", class_short="toto",
-                                          department="plop", ressources_dir="/plop/toto", resp_id=cls.uid)
+                                          department="plop", ressources_dir="/plop/toto", resp_id=cls.uid,
+                                          sec_id=cls.uid)
             res = query.execute()
             cls.gid = res.lastrowid
             query = TUTORSHIP.insert().values(student_id=cls.uid, ptutor_id=cls.uid, group_id=cls.gid)

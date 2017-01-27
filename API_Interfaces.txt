@@ -21,6 +21,6 @@ UserInfoAPI (api/userInfo)
 #######################
 GET -> Get the current logged user, return None if no one is connected
     Out:
-        200 -> USER = <USER_OBJECT>|None : Dictionnary containing user infos or None
+        200 -> USER = <USER_OBJECT>|None : Dictionary containing user infos or None
 
 

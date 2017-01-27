@@ -1,0 +1,10 @@
+#######################
+LoginAPI (api/login)
+#######################
+POST -> Authentication method with login/password
+    login : User login
+    password : User password
+
+DELETE -> Logout current user
+
+

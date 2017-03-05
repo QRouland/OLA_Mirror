@@ -1,0 +1,25 @@
+<div layout="row" layout-align="center center">
+  <div flex flex-gt-sm="40">
+    <md-card>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">Livret de l'alternant</span>
+        </md-card-title-text>
+      </md-card-title>
+
+      <md-card-content>
+        <div layout="column">
+          <md-input-container class="md-block">
+            <label>Email</label>
+            <input type="email" ng-model="email">
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Mot de passe</label>
+            <input type="password" ng-model="password">
+          </md-input-container>
+        </div>
+        <md-button class="md-raised md-primary" ng-click="login()">Se connecter</md-button>
+      </md-card-content>
+    </md-card>
+  </div>
+</div>

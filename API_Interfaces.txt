@@ -1,10 +1,7 @@
 #######################
 LoginAPI (api/login)
 #######################
-POST -> Authentication method with login/password
-    In:
-        login : User login
-        password : User password
+GET -> Authentication method 
     Out:
         200 -> AUTH_RESULT = "OK" : Authentication sucessful
         401 -> AUTH_RESULT = "AUTHENTICATION_FAILURE" : Wrong login/password
@@ -24,3 +21,7 @@ GET -> Get the current logged user, return None if no one is connected
         200 -> USER = <USER_OBJECT>|None : Dictionary containing user infos or None
 
 
+########################
+Redirect to cas auth (/login)
+########################
+Redirect to cas auth

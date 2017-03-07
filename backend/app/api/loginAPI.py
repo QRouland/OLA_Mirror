@@ -3,7 +3,7 @@ from flask_restful import Resource
 from flask_restful.reqparse import RequestParser
 
 from app.model import *
-
+from app.core import cas
 
 class LoginAPI(Resource):
     """

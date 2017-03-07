@@ -2,6 +2,7 @@ from flask import session
 from flask_restful import Resource
 from flask_restful.reqparse import RequestParser
 
+from app.core import cas
 from app.model import *
 
 
@@ -10,13 +11,8 @@ class LoginAPI(Resource):
         Login Api Resource
     """
 
-    def post(self):
-        parser = RequestParser()
-        parser.add_argument('login', required=True, help="Login cannot be blank!")
-        parser.add_argument('password', required=True, help="Password cannot be blank!")
-        args = parser.parse_args()
-
-        userInfo = self.getUserInfoFromCAS(args['login'], args['password'])
+    def get(self):
+        userInfo = self.getUserInfoFromCAS()
 
         if userInfo is not None:
             user = getUser(login=userInfo['login'])
@@ -32,9 +28,8 @@ class LoginAPI(Resource):
         session['user'] = None
         return {'AUTH_RESULT': 'OK'}, 200
 
-    def getUserInfoFromCAS(self, login, password):
-        # TODO : A implémenter
-        if (login == "admin" or login == "toto") and password == login:
-            return {"login": login}
+    def getUserInfoFromCAS(self):
+        if cas.username is not None:
+            return {"login": cas.username}
         else:
             return None

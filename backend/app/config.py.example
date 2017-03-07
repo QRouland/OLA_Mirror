@@ -26,6 +26,12 @@ class Config:
     BUNDLE_ERRORS = True
     SESSION_COOKIE_SECURE = True
     SESSION_VALIDITY_DURATION_WITHOUT_ACTIVITY_MIN = 20
+    CAS_SERVER = "http://localhost:8088"
+    CAS_AFTER_LOGIN = "after_login"
+    CAS_LOGIN_ROUTE = "/login"
+    CAS_LOGOUT_ROUTE = "/logout"
+    CAS_VALIDATE_ROUTE = "/serviceValidate"
+
 
 
 class Prod(Config):

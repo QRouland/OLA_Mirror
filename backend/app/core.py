@@ -1,8 +1,10 @@
 import importlib
 from datetime import timedelta
 
+from flask_cas import CAS
+
 from app.config import Config
-from flask import Flask, session
+from flask import Flask, session, redirect
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
@@ -31,6 +33,13 @@ meta = MetaData(engine, True)
 
 # RestFul Flask
 api = Api(app)
+
+# Cas Flask
+cas = CAS(app)
+
+@app.route('/redirect')
+def after_login():
+    return redirect("/api/login")
 
 # import api resources
 importlib.import_module("app.urls")

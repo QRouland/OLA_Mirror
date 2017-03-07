@@ -1,3 +1,4 @@
+from app.api.UserInfoAPI import UserInfoAPI
 from app.api.exampleapi import SomeApi
 from app.api.loginAPI import LoginAPI
 from app.core import api

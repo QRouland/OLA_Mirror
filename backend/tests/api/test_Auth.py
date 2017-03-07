@@ -18,7 +18,8 @@ class AuthTestCase(unittest.TestCase):
             res = query.execute()
             cls.uid = res.lastrowid
             query = GROUP.insert().values(name="test", year="2017", class_long="classe toto", class_short="toto",
-                                          department="plop", ressources_dir="/plop/toto", resp_id=cls.uid)
+                                          department="plop", ressources_dir="/plop/toto", resp_id=cls.uid,
+                                          sec_id=cls.uid)
             res = query.execute()
             cls.gid = res.lastrowid
             query = TUTORSHIP.insert().values(student_id=cls.uid, ptutor_id=cls.uid, group_id=cls.gid)
@@ -50,6 +51,9 @@ class AuthTestCase(unittest.TestCase):
                                  )
                              ), content_type='application/json')
 
+    def getUserInfo(self):
+        return self.app.get('/api/userInfo')
+
     def logout(self):
         return self.app.delete('/api/login')
 
@@ -57,11 +61,23 @@ class AuthTestCase(unittest.TestCase):
         rv = self.login('admin', 'admin')
         self.assertEqual(rv.status_code, 200, 'Login as admin Failed')
 
+        rv = self.login('admin', 'admin')
+        self.assertEqual(rv.status_code, 201, 'Login as admin succeed but should have already been done')
+
+        rv = self.getUserInfo()
+        self.assertEqual(rv.status_code, 200, 'Getting user info failed')
+        self.assertEqual({"id": getUser(login="admin")["id"], "login": "admin", "email": "admin@admin.com", "role": 4,
+                          "phone": "00.00.00.00.00"}, json.loads(rv.data)['USER'], 'Invalid user info')
+
         rv = self.logout()
         self.assertEqual(rv.status_code, 200, 'Logout Failed')
 
         rv = self.login('adminx', 'admin')
         self.assertEqual(rv.status_code, 401, 'Authentication from CAS has not failed for the invalid user xadmin !')
+
+        rv = self.getUserInfo()
+        self.assertEqual(rv.status_code, 200, 'Getting user info failed')
+        self.assertIsNone(json.loads(rv.data)['USER'], 'User info should be None')
 
         rv = self.login('admin', 'adminx')
         self.assertEqual(rv.status_code, 401,

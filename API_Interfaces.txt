@@ -2,9 +2,25 @@
 LoginAPI (api/login)
 #######################
 POST -> Authentication method with login/password
-    login : User login
-    password : User password
+    In:
+        login : User login
+        password : User password
+    Out:
+        200 -> AUTH_RESULT = "OK" : Authentication sucessful
+        401 -> AUTH_RESULT = "AUTHENTICATION_FAILURE" : Wrong login/password
+        403 -> AUTH_RESULT = "NOT_ALLOWED" : User is not allowed for this application
+        201 -> AUTH_RESULT = "ALREADY_LOGGED" : A user is already logged on this session
 
 DELETE -> Logout current user
+    Out:
+        200 -> AUTH_RESULT = "OK" : Logout sucessful
+
+
+#######################
+UserInfoAPI (api/userInfo)
+#######################
+GET -> Get the current logged user, return None if no one is connected
+    Out:
+        200 -> USER = <USER_OBJECT>|None : Dictionary containing user infos or None
 
 

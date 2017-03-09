@@ -9,3 +9,25 @@ body {
   padding: 0;
   background-color: #DADADA;
 }
+
+.indigo.darken-2 {
+ background-color: #a0b75e;
+}
+
+.bg-booklet {
+  background-image: url(../images/booklet.png);
+  background-size: 100% 100%;
+  /* #cb6565 #269486 #a0b75e*/
+}
+
+.no-margin {
+  margin: 0;
+}
+
+body > ui-view > div > div.bg-booklet.layout-align-center-center.layout-row.flex-gt-sm-65.flex > md-card {
+  background-image: rgba(255,255,0,0.8);
+}
+
+.p-home {
+  font-size: 0.6em;
+}

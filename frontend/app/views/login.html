@@ -1,24 +1,31 @@
-<div layout="row" layout-align="center center">
-  <div flex flex-gt-sm="40">
+<div layout="row" layout-fill>
+  <div flex flex-gt-sm="35" layout="row" layout-align="center" class="indigo darken-2">
     <md-card>
+      <!--<img ng-src="{{imagePath}}" class="md-card-image" alt="Washed Out">-->
       <md-card-title>
         <md-card-title-text>
-          <span class="md-headline">Livret de l'alternant</span>
+          <span class="md-headline">Livret Alternant</span>
         </md-card-title-text>
       </md-card-title>
-
       <md-card-content>
-        <div layout="column">
-          <md-input-container class="md-block">
-            <label>Email</label>
-            <input type="email" ng-model="email">
-          </md-input-container>
-          <md-input-container class="md-block">
-            <label>Mot de passe</label>
-            <input type="password" ng-model="password">
-          </md-input-container>
-        </div>
-        <md-button class="md-raised md-primary" ng-click="login()">Se connecter</md-button>
+        <p class="p-home">
+          The titles of Washed Out's breakthrough song and the first single from Paracosm share the two most important words in Ernest
+          Greene's musical language: feel it. It's a simple request, as well...
+        </p>
+        <p class="p-home">
+          The titles of Washed Out's breakthrough song and the first single from Paracosm share the two most important words in Ernest
+          Greene's musical language: feel it. It's a simple request, as well...
+        </p>
+        <p class="p-home">
+          The titles of Washed Out's breakthrough song and the first single from Paracosm share the two most important words in Ernest
+          Greene's musical language: feel it. It's a simple request, as well...
+        </p>
+      </md-card-content>
+    </md-card>
+  </div>
+  <div flex flex-gt-sm="65" layout="row" layout-align="center center" class="bg-booklet">
+    <md-card flex flex-gt-sm="55" class="transparencyCard">
+      <md-button class="md-raised md-primary md-mini" ng-click="login()">Se connecter</md-button>
       </md-card-content>
     </md-card>
   </div>

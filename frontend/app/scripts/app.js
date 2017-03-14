@@ -32,9 +32,9 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             controller: 'LoginCtrl'
         })
         
-        .state('userspace', {
+        .state('studentSpace', {
             url: '/espace-etudiant',
-            templateUrl: 'views/userSpace.html',
-            controller: 'UserSpaceCtrl'
+            templateUrl: 'views/studentSpace.html',
+            controller: 'StudentSpaceCtrl'
         });
     });

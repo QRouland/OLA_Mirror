@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('clientApp')
-        .controller('UserSpaceCtrl', ['$scope', '$state',
+        .controller('StudentSpaceCtrl', ['$scope', '$state',
             function ($scope, $state) {
 
                 $scope.toggleAccordion = toggleAccordion;

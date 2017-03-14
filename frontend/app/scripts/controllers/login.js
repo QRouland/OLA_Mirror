@@ -18,7 +18,7 @@
       function login() {
         console.log('login');
 
-        $state.go('userspace');
+        $state.go('studentSpace');
       }
 
       // Private methods ------------------

@@ -20,14 +20,14 @@ period_class = Base.classes.PERIOD
 livret_class = Base.classes.LIVRET
 
 
-def getUser(id=0, login="", email=""):
+def getUser(uid=0, login="", email=""):
     res = None
 
-    if id == 0 and login == "" and email == "":
+    if uid == 0 and login == "" and email == "":
         raise Exception("getUser must be called with one argument !")
     else:
-        if id != 0:
-            res = db.session.query(user_class).get(id)
+        if uid != 0:
+            res = db.session.query(user_class).get(uid)
 
         elif login != "":
             query = USER.select(USER.c.login == login)

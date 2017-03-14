@@ -18,10 +18,40 @@ UserInfoAPI (api/userInfo)
 #######################
 GET -> Get the current logged user, return None if no one is connected
     Out:
-        200 -> USER = <USER_OBJECT>|None : Dictionary containing user infos or None
+        200 -> USER = <USER_OBJECT>|null : Dictionary containing user infos or null
 
 
 ########################
 Redirect to cas auth (/login)
 ########################
 Redirect to cas auth
+
+
+########################
+UserAPI (api/user)
+########################
+POST -> Create a user if it not already exists
+    In:
+        CASid = Login of the user caught from the CAS authentication
+        role = Role of the user (can be concatenated with -) 1=secrétaire, 2=resp_formation, 3=tuteur_univ, 4=étudiant
+    Out:
+        200 -> UID = <USER_ID> : The user already exists with the id USER_ID
+        201 -> UID = <USER_ID> : The user has been successfully created with the id USER_ID
+        400 -> ERROR = "One or more parameters are missing" : Bad request
+
+PUT -> Modify an existing user
+    In: (Suffix = /byuid/<USER_ID>)
+        CASid = Login of the user caught from the CAS authentication
+        role = Role of the user (can be concatenated with -) 1=secrétaire, 2=resp_formation, 3=tuteur_univ, 4=étudiant
+        phone = Phone number of the user (00.00.00.00.00)
+        email = Email of the user
+    Out:
+        200 -> UID = <USER_ID> : The user has been modified sucessfully with the id USER_ID
+        400 -> ERROR = "One or more parameters are missing !" : Bad request
+        405 -> ERROR = "This user doesn't exists !" : Bad USER_ID provided
+
+GET -> Getting specified user infos
+    In: (Suffixes = /byuid/<USER_ID> | /bylogin/<USER_LOGIN> | /byemail/<USER_EMAIL>)
+    Out:
+        200 -> USER = <USER_OBJECT>|null : Dictionary containing user infos or null
+

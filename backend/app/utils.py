@@ -37,7 +37,8 @@ def new_alchemy_encoder(revisit_self=False, fields_to_expand=[]):
 
                     # is this field another SQLalchemy object, or a list of SQLalchemy objects?
                     if isinstance(val.__class__, DeclarativeMeta) or (
-                            isinstance(val, list) and len(val) > 0 and isinstance(val[0].__class__, DeclarativeMeta)):
+                                    isinstance(val, list) and len(val) > 0 and isinstance(val[0].__class__,
+                                                                                          DeclarativeMeta)):
                         # unless we're expanding this field, stop here
                         if field not in fields_to_expand:
                             # not expanding this field: set it to None and continue
@@ -51,3 +52,8 @@ def new_alchemy_encoder(revisit_self=False, fields_to_expand=[]):
             return json.JSONEncoder.default(self, obj)
 
     return AlchemyEncoder
+
+
+def checkParams(wanted, args):
+    inter = [elt for elt in wanted if elt in args]
+    return len(inter) == len(wanted)

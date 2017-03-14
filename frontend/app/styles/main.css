@@ -10,8 +10,12 @@ body {
   background-color: #DADADA;
 }
 
-.indigo.darken-2 {
- background-color: #a0b75e;
+.green.darken-2 {
+ background-color: #43a047;
+}
+
+.green.darken-3 {
+  background-color: #61b765;
 }
 
 .bg-booklet {

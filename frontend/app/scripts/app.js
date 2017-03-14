@@ -13,7 +13,8 @@ var app = angular.module('clientApp', [
     'ngCookies',
     'ngSanitize',
     'ngMaterial',
-    'ui.router'
+    'ui.router',
+    'ngMdIcons'
   ]);
 
 app.config(function ($stateProvider, $urlRouterProvider) {

@@ -14,72 +14,208 @@
 
 <div layout="row" layout-align="center none">
   <md-content flex="80">
-    <div layout="row" layout-align="end">
-      <md-button class="md-raised" ng-click="exportBooklet()">Exporter le livret</md-button>
-    </div>
 
-    <md-card ng-repeat="period in periods">
-      <md-card-title>
-        <md-card-title-text>
-          <h2 class="md-display-1">Période {{period.number}}</h2>
-        </md-card-title-text>
-      </md-card-title>
-      <md-card-content>
+    <div ng-cloak>
+      <md-content>
+        <md-tabs md-dynamic-height md-border-bottom>
+          <md-tab label="périodes">
+            <md-content class="md-padding">
 
-
-        <div layout="column" layout-fill>
-          <div flex class="green darken-2">
-            <h3 class="md-headline" style="padding-left : 10px">
-              Université
-              <md-button class="md-icon-button" ng-click="toggleAccordion(period.university.icon, 'false', $index)" aria-label="call">
-                <ng-md-icon icon="{{period.university.icon}}" style="fill: blue" size="24"></ng-md-icon>
-              </md-button>
-            </h3>
-
-            <md-content flex layout-padding ng-if="isOpenAccordion(period.university.icon)">
-              <p>Lorem ipsum dolor sit amet, ne quod novum mei. Sea omnium invenire mediocrem at, in lobortis conclusionemque
-                nam. Ne deleniti appetere reprimique pro, inani labitur disputationi te sed. At vix sale omnesque, id pro
-                labitur reformidans accommodare, cum labores honestatis eu. Nec quem lucilius in, eam praesent reformidans
-                no. Sed laudem aliquam ne.</p><br/>
-
-              <md-input-container class="md-block">
-                <label>Commentaire de période</label>
-                <textarea ng-model="period.university.comment" md-maxlength="150" rows="5" md-select-on-focus></textarea>
-              </md-input-container>
 
               <div layout="row" layout-align="end">
-                <md-button class="md-raised">Enregistrer</md-button>
+                <md-button class="md-raised" ng-click="exportBooklet()">Exporter le livret</md-button>
               </div>
+
+              <md-card ng-repeat="period in periods">
+                <md-card-title>
+                  <md-card-title-text>
+                    <h2 class="md-display-1">Période {{period.number}}</h2>
+                  </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+
+
+                  <div layout="column" layout-fill>
+                    <div flex class="green darken-2">
+                      <h3 class="md-headline" style="padding-left : 10px">
+                        Université
+                        <md-button class="md-icon-button" ng-click="toggleAccordion(period.university.icon, 'false', $index)" aria-label="call">
+                          <ng-md-icon icon="{{period.university.icon}}" style="fill: blue" size="24"></ng-md-icon>
+                        </md-button>
+                      </h3>
+
+                      <md-content flex layout-padding ng-if="isOpenAccordion(period.university.icon)">
+                        <p>Lorem ipsum dolor sit amet, ne quod novum mei. Sea omnium invenire mediocrem at, in lobortis conclusionemque
+                          nam. Ne deleniti appetere reprimique pro, inani labitur disputationi te sed. At vix sale omnesque,
+                          id pro labitur reformidans accommodare, cum labores honestatis eu. Nec quem lucilius in, eam praesent
+                          reformidans no. Sed laudem aliquam ne.</p><br/>
+
+                        <md-input-container class="md-block">
+                          <label>Commentaire de période</label>
+                          <textarea ng-model="period.university.comment" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+                        </md-input-container>
+
+                        <div layout="row" layout-align="end">
+                          <md-button class="md-raised">Enregistrer</md-button>
+                        </div>
+                      </md-content>
+                    </div>
+
+                    <div flex class="green darken-3">
+                      <h3 class="md-headline" style="padding-left : 10px">
+                        Entreprise
+                        <md-button class="md-icon-button" ng-click="toggleAccordion(period.company.icon, 'true', $index)" aria-label="call">
+                          <ng-md-icon icon="{{period.company.icon}}" style="fill: blue" size="24"></ng-md-icon>
+                        </md-button>
+                      </h3>
+
+                      <md-content flex layout-padding ng-if="isOpenAccordion(period.company.icon)">
+                        <p>Lorem ipsum dolor sit amet, ne quod novum mei. Sea omnium invenire mediocrem at, in lobortis conclusionemque
+                          nam. Ne deleniti appetere reprimique pro, inani labitur disputationi te sed. At vix sale omnesque,
+                          id pro labitur reformidans accommodare, cum labores honestatis eu. Nec quem lucilius in, eam praesent
+                          reformidans no. Sed laudem aliquam ne.</p>
+
+                        <md-input-container class="md-block">
+                          <label>Commentaire de période</label>
+                          <textarea ng-model="period.company.comment" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+                        </md-input-container>
+
+                        <div layout="row" layout-align="end">
+                          <md-button class="md-raised">Enregistrer</md-button>
+                        </div>
+                      </md-content>
+                    </div>
+                  </div>
+                </md-card-content>
+              </md-card>
+
             </md-content>
-          </div>
+          </md-tab>
+          <md-tab label="données administratives">
+            <md-content class="md-padding">
+              <md-content layout-padding>
+                <form name="projectForm">
+                  <md-card>
+                    <md-card-title>
+                      <md-card-title-text>
+                        <h3 class="md-headline">Informations personnelles</h3>
+                      </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
 
-          <div flex class="green darken-3">
-            <h3 class="md-headline" style="padding-left : 10px">
-              Entreprise
-              <md-button class="md-icon-button" ng-click="toggleAccordion(period.company.icon, 'true', $index)" aria-label="call">
-                <ng-md-icon icon="{{period.company.icon}}" style="fill: blue" size="24"></ng-md-icon>
-              </md-button>
-            </h3>
+                      <div layout="row">
+                        <md-input-container flex="50">
+                          <label>Prénom</label>
+                          <input required name="studentFirstName" ng-model="studentFirstName">
+                        </md-input-container>
 
-            <md-content flex layout-padding ng-if="isOpenAccordion(period.company.icon)">
-              <p>Lorem ipsum dolor sit amet, ne quod novum mei. Sea omnium invenire mediocrem at, in lobortis conclusionemque
-                nam. Ne deleniti appetere reprimique pro, inani labitur disputationi te sed. At vix sale omnesque, id pro
-                labitur reformidans accommodare, cum labores honestatis eu. Nec quem lucilius in, eam praesent reformidans
-                no. Sed laudem aliquam ne.</p>
+                        <md-input-container flex="50">
+                          <label>Nom</label>
+                          <input required name="studentLastName" ng-model="studentLastName">
+                        </md-input-container>
+                      </div>
 
-              <md-input-container class="md-block">
-                <label>Commentaire de période</label>
-                <textarea ng-model="period.company.comment" md-maxlength="150" rows="5" md-select-on-focus></textarea>
-              </md-input-container>
+                      <div layout="row">
+                        <md-input-container flex="50">
+                          <label>Type de contrat / d'engagement</label>
+                          <md-select name="type" ng-model="contractType" required>
+                            <md-option value="Apprentissage">Apprentissage</md-option>
+                            <md-option value="Professionnalisation">Professionnalisation</md-option>
+                            <md-option value="Stage">Stage</md-option>
+                          </md-select>
+                        </md-input-container>
 
-              <div layout="row" layout-align="end">
-                <md-button class="md-raised">Enregistrer</md-button>
-              </div>
-            </md-content>
-          </div>
+                        <md-input-container flex="25">
+                          <label>Début de contrat</label>
+                          <md-datepicker ng-model="beginContractDate"></md-datepicker>
+                        </md-input-container>
+
+                        <md-input-container flex="25">
+                          <label>Fin de contrat</label>
+                          <md-datepicker ng-model="endContractDate"></md-datepicker>
+                        </md-input-container>
+                      </div>
+
+                      <div layout="row">
+                        <md-input-container flex="50">
+                          <label>Email</label>
+                          <input required type="email" name="studentEmail" ng-model="studentEmail" />
+                        </md-input-container>
+
+                        <md-input-container flex="50">
+                          <label>Téléphone</label>
+                          <input required type="text" name="studentPhoneNumber" ng-model="studentPhoneNumber" />
+                        </md-input-container>
+                      </div>
+
+                    </md-card-content>
+                  </md-card>
+
+                  <md-card>
+                    <md-card-title>
+                      <md-card-title-text>
+                        <h3 class="md-headline">Tuteur pédagogique</h3>
+                      </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+
+                      <md-input-container class="md-block">
+                        <label>Email</label>
+                        <input required type="email" name="universityEmail" ng-model="universityEmail" />
+                      </md-input-container>
+
+                    </md-card-content>
+                  </md-card>
+
+                  <md-card>
+                    <md-card-title>
+                      <md-card-title-text>
+                        <h3 class="md-headline">Tuteur entreprise</h3>
+                      </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+
+                      <div layout="row">
+                        <md-input-container flex="50">
+                          <label>Prénom</label>
+                          <input required name="companyFirstName" ng-model="companyFirstName">
+                        </md-input-container>
+
+                        <md-input-container flex="50">
+                          <label>Nom</label>
+                          <input required name="companyLastName" ng-model="companyLastName">
+                        </md-input-container>
+                      </div>
+
+                      <div layout="row">
+                        <md-input-container flex="50">
+                          <label>Nom de l'entreprise</label>
+                          <input name="companyName" ng-model="companyName">
+                        </md-input-container>
+
+                        <md-input-container flex="50">
+                          <label>Lieu de l'alternance</label>
+                          <input name="companyAddress" ng-model="companyAddress">
+                        </md-input-container>
+                      </div>
+
+                      <md-input-container class="md-block">
+                        <label>Email</label>
+                        <input required type="email" name="companyEmail" ng-model="companyEmail" />
+                      </md-input-container>
+
+                    </md-card-content>
+                  </md-card>
+
+                  <div layout="row" layout-align="end">
+                    <md-button class="md-raised">Enregistrer</md-button>
+                  </div>
+                </form>
+              </md-content>
+          </md-tab>
+
+        </md-tabs>
+        </md-content>
         </div>
-      </md-card-content>
-    </md-card>
-
-  </md-content>
-</div>
+      </md-content>
+    </div>

@@ -32,23 +32,26 @@ UserAPI (api/user)
 ########################
 POST -> Create a user if it not already exists
     In:
-        CASid = Login of the user caught from the CAS authentication
+        CASid = Login of the user caught from the CAS authentication (must be unique)
         role = Role of the user (can be concatenated with -) 1=secrétaire, 2=resp_formation, 3=tuteur_univ, 4=étudiant
     Out:
         200 -> UID = <USER_ID> : The user already exists with the id USER_ID
         201 -> UID = <USER_ID> : The user has been successfully created with the id USER_ID
         400 -> ERROR = "One or more parameters are missing" : Bad request
+        405 -> ERROR = "A user with this email already exists !" : A user with this email already exists
 
 PUT -> Modify an existing user
     In: (Suffix = /byuid/<USER_ID>)
-        CASid = Login of the user caught from the CAS authentication
+        CASid = Login of the user caught from the CAS authentication (must be unique)
         role = Role of the user (can be concatenated with -) 1=secrétaire, 2=resp_formation, 3=tuteur_univ, 4=étudiant
         phone = Phone number of the user (00.00.00.00.00)
-        email = Email of the user
+        email = Email of the user (must be unique)
     Out:
         200 -> UID = <USER_ID> : The user has been modified sucessfully with the id USER_ID
         400 -> ERROR = "One or more parameters are missing !" : Bad request
         405 -> ERROR = "This user doesn't exists !" : Bad USER_ID provided
+        405 -> ERROR = "A user with this CASid (login) already exists !" : A user with this login already exists
+        405 -> ERROR = "A user with this email already exists !" : A user with this email already exists
 
 GET -> Getting specified user infos
     In: (Suffixes = /byuid/<USER_ID> | /bylogin/<USER_LOGIN> | /byemail/<USER_EMAIL>)

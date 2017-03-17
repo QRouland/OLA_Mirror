@@ -74,7 +74,7 @@ class GroupAPI(Resource):
             return {"ERROR": "This group does not exists !"}, 405
 
         group = getGroup(name=name)
-        if group is None:
+        if group is not None:
             return {"ERROR": "A group with this name already exists !"}, 405
 
         user = getUser(uid=resp_id)

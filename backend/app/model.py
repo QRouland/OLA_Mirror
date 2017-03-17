@@ -50,3 +50,25 @@ def isUserAllowed(uid):
         .filter(or_(tutorship_class.student_id == uid, group_class.resp_id == uid))
     res = query.all()
     return res is not None and len(res) > 0
+
+
+def getGroup(gid=0, name=""):
+    res = None
+
+    if gid == 0 and name == "":
+        raise Exception("getUser must be called with one argument !")
+    else:
+        if gid != 0:
+            res = db.session.query(group_class).get(gid)
+
+        elif name != "":
+            query = GROUP.select(GROUP.c.name == name)
+            rows = query.execute()
+            res = rows.first()
+
+        if res is not None:
+            return {"id": res.id, "name": res.name, "year": res.year, "class_short": res.class_short,
+                    "class_long": res.class_long, "department": res.department, "resp_id": getUser(uid=res.resp_id),
+                    "sec_id": getUser(uid=res.sec_id), "ressources_dir": res.ressources_dir}
+        else:
+            return None

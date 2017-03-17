@@ -2,7 +2,6 @@ import os
 
 from flask_restful import Resource, request
 
-from app.config import Config
 from app.core import app
 from app.model import *
 from app.utils import checkParams
@@ -25,7 +24,7 @@ class GroupAPI(Resource):
         department = args['department']
         resp_id = args['resp_id']
         sec_id = args['sec_id']
-        res_dir = Config.BASE_RESSOURCES_DIR + name + "/"
+        res_dir = app.config['BASE_RESSOURCES_DIR'] + name + "/"
 
         group = getGroup(name=name)
         if group is not None:
@@ -73,8 +72,8 @@ class GroupAPI(Resource):
         if group is None:
             return {"ERROR": "This group does not exists !"}, 405
 
-        group = getGroup(name=name)
-        if group is not None:
+        group2 = getGroup(name=name)
+        if group2 is not None:
             return {"ERROR": "A group with this name already exists !"}, 405
 
         user = getUser(uid=resp_id)
@@ -99,7 +98,10 @@ class GroupAPI(Resource):
                                       department=department, resp_id=resp_id, sec_id=sec_id, ressources_dir=res_dir) \
             .where(GROUP.c.id == gid)
         res = query.execute()
-        os.mkdir(res_dir)
+
+        if group["ressources_dir"] != res_dir:
+            os.rename(group["ressources_dir"], res_dir)
+
         return {"GID": gid}, 200
 
     def get(self, gid=0, name=""):

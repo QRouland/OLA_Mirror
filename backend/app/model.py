@@ -27,7 +27,9 @@ def getUser(uid=0, login="", email=""):
         raise Exception("getUser must be called with one argument !")
     else:
         if uid != 0:
-            res = db.session.query(user_class).get(uid)
+            query = USER.select(USER.c.id == uid)
+            rows = query.execute()
+            res = rows.first()
 
         elif login != "":
             query = USER.select(USER.c.login == login)
@@ -59,7 +61,9 @@ def getGroup(gid=0, name=""):
         raise Exception("getUser must be called with one argument !")
     else:
         if gid != 0:
-            res = db.session.query(group_class).get(gid)
+            query = GROUP.select(GROUP.c.id == gid)
+            rows = query.execute()
+            res = rows.first()
 
         elif name != "":
             query = GROUP.select(GROUP.c.name == name)

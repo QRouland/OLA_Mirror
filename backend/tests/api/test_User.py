@@ -15,7 +15,7 @@ class UserTestCase(unittest.TestCase):
     def tearDownClass(cls):
         query = USER.delete().where(user_class.login == "admin")
         query.execute()
-        query = USER.delete().where(user_class.login == "admin2")
+        query = USER.delete().where(user_class.login == "adminx")
         query.execute()
 
     def setUp(self):

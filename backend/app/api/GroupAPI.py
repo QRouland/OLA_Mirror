@@ -2,9 +2,9 @@ import os
 
 from flask_restful import Resource, request
 
-from app.core import app
+from app.api import mailsModels
 from app.model import *
-from app.utils import checkParams
+from app.utils import *
 
 
 class GroupAPI(Resource):
@@ -97,7 +97,7 @@ class GroupAPI(Resource):
         query = GROUP.update().values(name=name, year=year, class_short=class_short, class_long=class_long,
                                       department=department, resp_id=resp_id, sec_id=sec_id, ressources_dir=res_dir) \
             .where(GROUP.c.id == gid)
-        res = query.execute()
+        query.execute()
 
         if group["ressources_dir"] != res_dir:
             os.rename(group["ressources_dir"], res_dir)
@@ -109,3 +109,43 @@ class GroupAPI(Resource):
             return {'GROUP': getGroup(gid=gid)}, 200
         elif name != "":
             return {'GROUP': getGroup(name=name)}, 200
+
+    def options(self, gid):
+        args = request.get_json(cache=False, force=True)
+        if not checkParams(['pairs'], args):
+            return {"ERROR": "One or more parameters are missing !"}, 400
+
+        pairs = args["pairs"]
+
+        group = getGroup(gid=gid)
+        if group is None:
+            return {"ERROR": "This group does not exists !"}, 405
+
+        for p in pairs:
+            try:
+                stud = getUser(uid=p[0])
+                if stud is None:
+                    return {"ERROR": "The user with id " + str(p[0]) + " does not exists !"}, 400
+                elif stud['role'] != "4":
+                    return {"ERROR": "A student must have the 'student' role !"}, 400
+
+                tutor = getUser(uid=p[1])
+                if tutor is None:
+                    return {"ERROR": "The user with id " + str(p[1]) + " does not exists !"}, 400
+                elif tutor['role'] == "4":
+                    return {"ERROR": "A student can't be a tutor !"}, 400
+                elif "3" not in tutor['role'].split('-'):
+                    role = tutor['role'] + "-3"
+                    query = USER.update().values(role=role).where(USER.c.id == p[1])
+                    query.execute()
+            except IndexError:
+                return {"ERROR": "Pairs are incorrectly formed !"}, 409
+
+            query = TUTORSHIP.insert().values(group_id=gid, student_id=p[0], ptutor_id=p[1])
+            query.execute()
+            mail = mailsModels.getMailContent("NEW_TO_GROUP", {"GROUP": group["name"],
+                                                               "URL": "ola.univ-tlse2.fr/registration/"
+                                                                      + get_random_string()})
+            send_mail(mail[0], stud["email"], mail[1])
+
+        return {"RESULT": "Pairs added successfully"}, 200

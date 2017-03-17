@@ -31,3 +31,4 @@ coverage.xml
 
 #Config files
 config.py
+/app/OLA_RESSOURCES/

@@ -96,3 +96,15 @@ GET -> Getting specified group infos
     In: (Suffixes = /bygid/<GROUP_ID> | /byname/<GROUP_NAME> )
     Out:
         200 -> GROUP = <GROUP_OBJECT>|null : Dictionary containing group infos or null
+
+OPTIONS -> Add pairs of users (student/tutor) to the group
+    In:
+        pairs -> Table of pairs student's uid/tutor's uid (ex: [[1,2],[3,2]])
+    Out:
+        200 -> RESULT = "Pairs added successfully"
+        400 -> ERROR = "One or more parameters are missing !" : Bad request
+        400 -> ERROR = "The user with id <USER_ID> doesn't exists !" : The given USER_ID for student or tutor is not found
+        400 -> ERROR = "A student must have the 'student' role !" : The given USER_ID for student doesn't have the "student" role (4)
+        400 -> ERROR = "A student can't be a tutor !" : The given USER_ID for tutor have the "student" role (4) and so can't be a tutor
+        405 -> ERROR = "This group doesn't exists !" : Bad GROUP_ID provided
+        409 -> ERROR = "Pairs are incorrectly formed !" : Bad syntax in pairs table

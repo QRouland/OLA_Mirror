@@ -48,6 +48,6 @@ def getMailContent(mail_type, args):
     else:
         raise Exception("Unknown mail type !")
 
-    for key, value in args:
+    for key, value in args.items():
         mail[1].replace("#" + key, value)
     return mail

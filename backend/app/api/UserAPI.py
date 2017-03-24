@@ -46,7 +46,7 @@ class UserAPI(Resource):
         if psw is None or len(psw) < 8:
             return {"ERROR": "Password can't be empty or less than 8 characters !"}, 400
 
-        password = sha256(psw).hexdigest()
+        password = sha256(psw.encode('utf-8')).hexdigest()
 
         if getUser(uid=uid) is None:
             return {"ERROR": "This user doesn't exists !"}, 405

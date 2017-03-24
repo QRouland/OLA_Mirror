@@ -12,10 +12,12 @@ class GroupTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        query = USER.insert().values(login="admin", email="admin@admin.com", role="4", phone="00.00.00.00.00")
+        query = USER.insert().values(email="admin@admin.com", role="4", phone="00.00.00.00.00", name="admin",
+                                     hash="toto")
         res = query.execute()
         cls.uid = res.lastrowid
-        query = USER.insert().values(login="adminx", email="adminx@admin.com", role="3", phone="00.00.00.00.00")
+        query = USER.insert().values(email="adminx@admin.com", role="3", phone="00.00.00.00.00", name="adminx",
+                                     hash="zozo")
         res = query.execute()
         cls.uid2 = res.lastrowid
 
@@ -25,9 +27,9 @@ class GroupTestCase(unittest.TestCase):
         query.execute()
         query = GROUP.delete().where(group_class.name == "group_test2")
         query.execute()
-        query = USER.delete().where(user_class.login == "admin")
+        query = USER.delete().where(user_class.email == "admin@admin.com")
         query.execute()
-        query = USER.delete().where(user_class.login == "adminx")
+        query = USER.delete().where(user_class.email == "adminx@admin.com")
         query.execute()
 
     def setUp(self):

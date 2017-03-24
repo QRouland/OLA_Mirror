@@ -25,6 +25,7 @@ class GroupAPI(Resource):
         resp_id = args['resp_id']
         sec_id = args['sec_id']
         res_dir = getParam('URL_BASE_DIRECTORY') + name + "/"
+        mails = []
 
         group = getGroup(name=name)
         if group is not None:
@@ -38,14 +39,14 @@ class GroupAPI(Resource):
             rows = query.execute()
             res = rows.first()
             if res.hash is not None and len(res.hash) > 0:
-                mail = mailsModels.getMailContent("NEW_RESP_OF_GROUP", {"GROUP": group["name"],
+                mail = mailsModels.getMailContent("NEW_RESP_OF_GROUP", {"GROUP": name,
                                                                         "URL": getParam('OLA_URL') + "registration/"
                                                                                + res.hash})
             else:
-                mail = mailsModels.getMailContent("RESP_OF_GROUP", {"GROUP": group["name"],
+                mail = mailsModels.getMailContent("RESP_OF_GROUP", {"GROUP": name,
                                                                     "URL": getParam('OLA_URL')})
 
-            send_mail(mail[0], user["email"], mail[1])
+            mails.append((user["email"], mail))
             if "2" not in user['role'].split('-'):
                 role = user['role'] + "-2"
                 query = USER.update().values(role=role).where(USER.c.id == resp_id)
@@ -59,14 +60,14 @@ class GroupAPI(Resource):
             rows = query.execute()
             res = rows.first()
             if res.hash is not None and len(res.hash) > 0:
-                mail = mailsModels.getMailContent("NEW_SEC_OF_GROUP", {"GROUP": group["name"],
+                mail = mailsModels.getMailContent("NEW_SEC_OF_GROUP", {"GROUP": name,
                                                                        "URL": getParam('OLA_URL') + "registration/"
                                                                               + res.hash})
             else:
-                mail = mailsModels.getMailContent("SEC_OF_GROUP", {"GROUP": group["name"],
+                mail = mailsModels.getMailContent("SEC_OF_GROUP", {"GROUP": name,
                                                                    "URL": getParam('OLA_URL')})
 
-            send_mail(mail[0], user["email"], mail[1])
+            mails.append((user["email"], mail))
             if "1" not in user['role'].split('-'):
                 role = user['role'] + "-1"
                 query = USER.update().values(role=role).where(USER.c.id == sec_id)
@@ -76,6 +77,12 @@ class GroupAPI(Resource):
                                       department=department, resp_id=resp_id, sec_id=sec_id, ressources_dir=res_dir)
         res = query.execute()
         os.mkdir(res_dir)
+
+        for m in mails:
+            addr = m[0]
+            mail = m[1]
+            send_mail(mail[0], addr, mail[1])
+
         return {"GID": res.lastrowid}, 201
 
     def put(self, gid):
@@ -91,6 +98,7 @@ class GroupAPI(Resource):
         resp_id = args['resp_id']
         sec_id = args['sec_id']
         res_dir = getParam('URL_BASE_DIRECTORY') + name + "/"
+        mails = []
 
         group = getGroup(gid=gid)
         if group is None:
@@ -115,7 +123,7 @@ class GroupAPI(Resource):
                 mail = mailsModels.getMailContent("RESP_OF_GROUP", {"GROUP": group["name"],
                                                                     "URL": getParam('OLA_URL')})
 
-            send_mail(mail[0], user["email"], mail[1])
+            mails.append((user["email"], mail))
             if "2" not in user['role'].split('-'):
                 role = user['role'] + "-2"
                 query = USER.update().values(role=role).where(USER.c.id == resp_id)
@@ -136,7 +144,7 @@ class GroupAPI(Resource):
                 mail = mailsModels.getMailContent("SEC_OF_GROUP", {"GROUP": group["name"],
                                                                    "URL": getParam('OLA_URL')})
 
-            send_mail(mail[0], user["email"], mail[1])
+            mails.append((user["email"], mail))
             if "1" not in user['role'].split('-'):
                 role = user['role'] + "-1"
                 query = USER.update().values(role=role).where(USER.c.id == sec_id)
@@ -149,6 +157,11 @@ class GroupAPI(Resource):
 
         if group["ressources_dir"] != res_dir:
             os.rename(group["ressources_dir"], res_dir)
+
+        for m in mails:
+            addr = m[0]
+            mail = m[1]
+            send_mail(mail[0], addr, mail[1])
 
         return {"GID": gid}, 200
 

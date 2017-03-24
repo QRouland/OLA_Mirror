@@ -1,8 +1,8 @@
 from flask import session
 from flask_restful import Resource
+from flask_restful.reqparse import RequestParser
 
-from app.core import cas
-from app.model import *
+from app.model import getUser
 
 
 class LoginAPI(Resource):
@@ -10,19 +10,20 @@ class LoginAPI(Resource):
         Login Api Resource
     """
 
-    def get(self):
+    def post(self):
+        parser = RequestParser()
+        parser.add_argument('email', required=True, help="Email cannot be blank!")
+        parser.add_argument('password', required=True, help="Password cannot be blank!")
+        args = parser.parse_args()
+
         if "user" in session and session["user"] is not None:
             return {'AUTH_RESULT': 'ALREADY_LOGGED'}, 201
-        userInfo = self.getUserInfoFromCAS()
 
-        if userInfo is not None:
-            user = getUser(login=userInfo['login'])
-            if user is not None and isUserAllowed(user["id"]):
-                session['user'] = user
-                return {'AUTH_RESULT': 'OK'}, 200
-            else:
-                session['user'] = None
-                return {'AUTH_RESULT': 'NOT_ALLOWED'}, 403
+        user = getUser(email=args['email'])
+
+        if user is not None and args['password'] == args['email']:
+            session['user'] = user
+            return {'AUTH_RESULT': 'OK'}, 200
         else:
             session['user'] = None
             return {'AUTH_RESULT': 'AUTHENTICATION_FAILED'}, 401
@@ -31,8 +32,3 @@ class LoginAPI(Resource):
         session['user'] = None
         return {'AUTH_RESULT': 'OK'}, 200
 
-    def getUserInfoFromCAS(self):
-        if cas.username is not None:
-            return {"login": cas.username}
-        else:
-            return None

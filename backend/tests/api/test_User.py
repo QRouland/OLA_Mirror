@@ -15,7 +15,7 @@ class UserTestCase(unittest.TestCase):
     def tearDownClass(cls):
         query = USER.delete().where(user_class.email == "admin@admin.com")
         query.execute()
-        query = USER.delete().where(user_class.email == "admin@admin.com")
+        query = USER.delete().where(user_class.email == "adminx@admin.com")
         query.execute()
 
     def setUp(self):

@@ -1,0 +1,67 @@
+Page 1 :
+
+MASTER : {{ nom_master }}
+
+{{ nom_complet_master }}
+
+Année universitaire :
+
+{{ annee_1 }}
+- 
+{{ annee_2 }}
+
+De : {{ nom_prenom }}
+
+mail : {{ email }}
+
+tel : {{ telephone }}
+
+Alternant à : {{ entreprise }}
+
+tuteur/tutrice pédagogique : {{ tuteur_pedagogique }}
+
+Tuteur / Tutrice entreprise : {{ tuteur_entreprise }}
+
+
+Page 2 :
+Alternant
+Type de contrat : 
+{{ type_contrat_apprentissage | X }}
+{{ type_contrat_professionnalisation | X }}
+{{ type_contrat_stage | X }}
+
+Début de contrat : {{ debut_contrat }}
+Fin de contrat : {{ fin_contrat }}
+tel : {{ telephone }}
+mail : {{ email }}
+compostant de formation : {{ compostant_formation }}
+responsable tuteur_pedagogique de la formation : {{ responsable_pedagogique_formation }}
+tel : {{ tel_responsable_pedagogique_formation }}
+mail : {{ mail_responsable_pedagogique_formation }}
+
+tuteur pédagogique :
+{{ tel_tuteur_pedagogique }}
+{{ mail_tuteur_pedagogique }}
+
+tuteur entreprise : 
+{{ tuteur_entreprise }}
+entreprise : {{ entreprise }}
+adresse lieu Alternance : {{ adresse_entreprise }}
+tel : {{ tel_tuteur_entreprise }}
+mail : {{ mail_tuteur_entreprise }}
+
+Page 4 :
+poste occupé : {{ poste_occupe }}
+{{ poste_occupe_2 }}
+
+Pentreprise : 
+{{ n_periode }}
+{{ debut_periode }}
+{{ fin_periode }}
+{{ travaux_entreprise }}
+{{ remarque_tuteur }}
+
+bilan_periode : 
+
+{{ n_periode }}
+{{ bilan_periode }}

@@ -24,7 +24,7 @@ class GroupAPI(Resource):
         department = args['department']
         resp_id = args['resp_id']
         sec_id = args['sec_id']
-        res_dir = app.config['BASE_RESSOURCES_DIR'] + name + "/"
+        res_dir = getParam('URL_BASE_DIRECTORY') + name + "/"
 
         group = getGroup(name=name)
         if group is not None:
@@ -34,6 +34,18 @@ class GroupAPI(Resource):
         if user is None:
             return {"ERROR": "The user with id " + str(resp_id) + " does not exists !"}, 400
         else:
+            query = USER.select(USER.c.id == user["id"])
+            rows = query.execute()
+            res = rows.first()
+            if res.hash is not None and len(res.hash) > 0:
+                mail = mailsModels.getMailContent("NEW_RESP_OF_GROUP", {"GROUP": group["name"],
+                                                                        "URL": getParam('OLA_URL') + "registration/"
+                                                                               + res.hash})
+            else:
+                mail = mailsModels.getMailContent("RESP_OF_GROUP", {"GROUP": group["name"],
+                                                                    "URL": getParam('OLA_URL')})
+
+            send_mail(mail[0], user["email"], mail[1])
             if "2" not in user['role'].split('-'):
                 role = user['role'] + "-2"
                 query = USER.update().values(role=role).where(USER.c.id == resp_id)
@@ -43,6 +55,18 @@ class GroupAPI(Resource):
         if user is None:
             return {"ERROR": "The user with id " + str(sec_id) + " does not exists !"}, 400
         else:
+            query = USER.select(USER.c.id == user["id"])
+            rows = query.execute()
+            res = rows.first()
+            if res.hash is not None and len(res.hash) > 0:
+                mail = mailsModels.getMailContent("NEW_SEC_OF_GROUP", {"GROUP": group["name"],
+                                                                       "URL": getParam('OLA_URL') + "registration/"
+                                                                              + res.hash})
+            else:
+                mail = mailsModels.getMailContent("SEC_OF_GROUP", {"GROUP": group["name"],
+                                                                   "URL": getParam('OLA_URL')})
+
+            send_mail(mail[0], user["email"], mail[1])
             if "1" not in user['role'].split('-'):
                 role = user['role'] + "-1"
                 query = USER.update().values(role=role).where(USER.c.id == sec_id)
@@ -59,14 +83,14 @@ class GroupAPI(Resource):
         if not checkParams(['name', 'year', 'class_short', 'class_long', 'department', 'resp_id', 'sec_id'], args):
             return {"ERROR": "One or more parameters are missing !"}, 400
 
-        name = args['name']
+        name = args['name'].replace(" ", "_").replace("/", "-")
         year = args['year']
         class_short = args['class_short']
         class_long = args['class_long']
         department = args['department']
         resp_id = args['resp_id']
         sec_id = args['sec_id']
-        res_dir = app.config['BASE_RESSOURCES_DIR'] + name + "/"
+        res_dir = getParam('URL_BASE_DIRECTORY') + name + "/"
 
         group = getGroup(gid=gid)
         if group is None:
@@ -80,6 +104,18 @@ class GroupAPI(Resource):
         if user is None:
             return {"ERROR": "The user with id " + str(resp_id) + " does not exists !"}, 400
         else:
+            query = USER.select(USER.c.id == user["id"])
+            rows = query.execute()
+            res = rows.first()
+            if res.hash is not None and len(res.hash) > 0:
+                mail = mailsModels.getMailContent("NEW_RESP_OF_GROUP", {"GROUP": group["name"],
+                                                                        "URL": getParam('OLA_URL') + "registration/"
+                                                                               + res.hash})
+            else:
+                mail = mailsModels.getMailContent("RESP_OF_GROUP", {"GROUP": group["name"],
+                                                                    "URL": getParam('OLA_URL')})
+
+            send_mail(mail[0], user["email"], mail[1])
             if "2" not in user['role'].split('-'):
                 role = user['role'] + "-2"
                 query = USER.update().values(role=role).where(USER.c.id == resp_id)
@@ -89,6 +125,18 @@ class GroupAPI(Resource):
         if user is None:
             return {"ERROR": "The user with id " + str(sec_id) + " does not exists !"}, 400
         else:
+            query = USER.select(USER.c.id == user["id"])
+            rows = query.execute()
+            res = rows.first()
+            if res.hash is not None and len(res.hash) > 0:
+                mail = mailsModels.getMailContent("NEW_SEC_OF_GROUP", {"GROUP": group["name"],
+                                                                       "URL": getParam('OLA_URL') + "registration/"
+                                                                              + res.hash})
+            else:
+                mail = mailsModels.getMailContent("SEC_OF_GROUP", {"GROUP": group["name"],
+                                                                   "URL": getParam('OLA_URL')})
+
+            send_mail(mail[0], user["email"], mail[1])
             if "1" not in user['role'].split('-'):
                 role = user['role'] + "-1"
                 query = USER.update().values(role=role).where(USER.c.id == sec_id)
@@ -143,9 +191,18 @@ class GroupAPI(Resource):
 
             query = TUTORSHIP.insert().values(group_id=gid, student_id=p[0], ptutor_id=p[1])
             query.execute()
-            mail = mailsModels.getMailContent("NEW_TO_GROUP", {"GROUP": group["name"],
-                                                               "URL": "ola.univ-tlse2.fr/registration/"
-                                                                      + get_random_string()})
+
+            query = USER.select(USER.c.id == stud["id"])
+            rows = query.execute()
+            res = rows.first()
+            if res.hash is not None and len(res.hash) > 0:
+                mail = mailsModels.getMailContent("NEW_STUD_OF_GROUP", {"GROUP": group["name"],
+                                                                        "URL": getParam('OLA_URL') + "registration/"
+                                                                               + res.hash})
+            else:
+                mail = mailsModels.getMailContent("STUD_OF_GROUP", {"GROUP": group["name"],
+                                                                    "URL": getParam('OLA_URL')})
+
             send_mail(mail[0], stud["email"], mail[1])
 
         return {"RESULT": "Pairs added successfully"}, 200

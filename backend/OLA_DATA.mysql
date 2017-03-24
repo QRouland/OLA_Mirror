@@ -1,0 +1,24 @@
+USE OLA;
+INSERT INTO SETTINGS VALUES ('URL_BASE_DIRECTORY', '/OLA_RESSOURCES/', 'Répertoire base pour le dépot des fichiers');
+INSERT INTO SETTINGS VALUES ('OLA_URL', 'ola.univ-tlse2.fr/', 'URL de l application');
+
+INSERT INTO `USER` VALUES (1, '1', 'sec@univ-tlse2.fr', 'Secrétaire', DEFAULT, 'aZeRtYuIoP', '01.23.45.67.89');
+INSERT INTO `USER` VALUES (2, '4', 'etu1@univ-tlse2.fr', 'Etudiant 1', DEFAULT, 'qSdFgHjKlM', '01.23.45.67.89');
+INSERT INTO `USER` VALUES (3, '4', 'etu2@univ-tlse2.fr', 'Etudiant 2', DEFAULT, 'wXcVbN', '01.23.45.67.89');
+INSERT INTO `USER` VALUES (4, '4', 'etu3@univ-tlse2.fr', 'Etudiant 3', DEFAULT, 'pOiUyTrEzA', '01.23.45.67.89');
+INSERT INTO `USER` VALUES (5, '2-3', 'resp@univ-tlse2.fr', 'Responsable', DEFAULT, 'mLkJhGfDsQ', '01.23.45.67.89');
+INSERT INTO `USER` VALUES (6, '3', 'tut@univ-tlse2.fr', 'Tuteur Pédagogique', DEFAULT, 'nBvCxW', '01.23.45.67.89');
+
+INSERT INTO `GROUP` VALUES
+  (1, 'M2_ICE_2016-2017_TEST', '2017', 'Master2 ICE', 'Master 2 Informatique Collaborative en Entreprise',
+   'Sciences du chômage proffessionnel', 5, 1,
+   '/home/dan/PycharmProjects/OLA/backend/app/OLA_RESSOURCES/M2_ICE_2016-2017_TEST');
+INSERT INTO `GROUP` VALUES
+  (2, 'M1_ICE_2016-2017_TEST', '2017', 'Master1 ICE', 'Master 1 Informatique Collaborative en Entreprise',
+   'Sciences du chômage proffessionnel', 5, 1,
+   '/home/dan/PycharmProjects/OLA/backend/app/OLA_RESSOURCES/M1_ICE_2016-2017_TEST');
+
+INSERT INTO TUTORSHIP VALUES (DEFAULT, 1, 5, 2);
+INSERT INTO TUTORSHIP VALUES (DEFAULT, 2, 5, 4);
+INSERT INTO TUTORSHIP VALUES (DEFAULT, 1, 6, 3);
+

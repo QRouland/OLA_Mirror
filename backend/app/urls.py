@@ -9,6 +9,5 @@ from app.core import api
 api.add_resource(SomeApi, '/api/someapi', '/api/someapi/<int:id>')
 api.add_resource(LoginAPI, '/api/login')
 api.add_resource(UserInfoAPI, '/api/userInfo')
-api.add_resource(UserAPI, '/api/user', '/api/user/byuid/<int:uid>', '/api/user/bylogin/<string:login>',
-                 '/api/user/byemail/<string:email>')
+api.add_resource(UserAPI, '/api/user', '/api/user/byuid/<int:uid>', '/api/user/byemail/<string:email>')
 api.add_resource(GroupAPI, '/api/group', '/api/group/bygid/<int:gid>', '/api/group/byname/<string:name>')

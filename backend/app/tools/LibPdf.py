@@ -78,3 +78,7 @@ def upload_file():
          <input type=submit value=Upload>
     </form>
     '''
+
+def delete_file(pdf_path):
+    if os.path.exists(pdf_path):
+        os.remove(pdf_path)

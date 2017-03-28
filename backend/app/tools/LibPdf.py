@@ -53,14 +53,14 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 
-def upload_file(file, upload_folder):
+def upload_file(file_to_upload, upload_folder):
     """
     rep de l'etu avec id
     :param file:
     :param upload_folder:
     :return:
     """
-    file.save(secure_filename(os.path.join(upload_folder, file.filename)))
+    file_to_upload.save(os.path.join(upload_folder, secure_filename(file_to_upload.filename)))
 
 
 

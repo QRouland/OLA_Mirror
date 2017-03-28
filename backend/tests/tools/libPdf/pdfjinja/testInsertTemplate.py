@@ -3,9 +3,8 @@ import unittest
 from io import BytesIO
 from pathlib import Path
 
-from pdfjinja import PdfJinja
-
 from app.tools.InsertTemplate import remplir_template
+from pdfjinja import PdfJinja
 
 
 class InsertTemplateTestCase(unittest.TestCase):

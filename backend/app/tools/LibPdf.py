@@ -2,6 +2,7 @@ import os
 
 from PyPDF2 import PdfFileReader, PdfFileMerger
 from pdfjinja import PdfJinja
+from werkzeug.utils import secure_filename
 
 
 def fusion_fichiers(chemin_merge_pdf, nom_merge_pdf, liste_de_pdf):
@@ -47,37 +48,21 @@ def remplir_template(dirname_template, pdf_template, dirname_output_file, pdf_ou
 
 
 def allowed_file(filename):
-    allowed_extensions = "pdf"
+    allowed_extensions = {'pdf'}
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 
-def upload_file():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit a empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',
-                                    filename=filename))
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
-         <input type=submit value=Upload>
-    </form>
-    '''
+def upload_file(file, upload_folder):
+    """
+    rep de l'etu avec id
+    :param file:
+    :param upload_folder:
+    :return:
+    """
+    file.save(secure_filename(os.path.join(upload_folder, file.filename)))
+
+
 
 def delete_file(pdf_path):
     if os.path.exists(pdf_path):

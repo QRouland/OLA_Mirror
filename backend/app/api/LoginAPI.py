@@ -1,11 +1,11 @@
 from hashlib import sha256
 
-from flask import session
+from flask import session, request
 from flask_restful import Resource
-from flask_restful.reqparse import RequestParser
 
 from app.core import app
-from app.model import USER
+from app.model import USER, getUser
+from app.utils import checkParams
 
 
 class LoginAPI(Resource):
@@ -14,10 +14,9 @@ class LoginAPI(Resource):
     """
 
     def post(self):
-        parser = RequestParser()
-        parser.add_argument('email', required=True, help="Email cannot be blank!")
-        parser.add_argument('password', required=True, help="Password cannot be blank!")
-        args = parser.parse_args()
+        args = request.get_json(cache=False, force=True)
+        if not checkParams(['email', 'password'], args):
+            return {"ERROR": "One or more parameters are missing !"}, 400
         email = args['email']
         psw = args['password']
         password = sha256(psw.encode('utf-8')).hexdigest()
@@ -27,17 +26,19 @@ class LoginAPI(Resource):
 
         query = USER.select(USER.c.email == email)
         rows = query.execute()
-        user = rows.first()
+        res = rows.first()
 
         if app.config['TESTING']:
-            if user is not None and psw == email:
+            if res is not None and psw == email:
+                user = getUser(uid=res.id)
                 session['user'] = user
                 return {'AUTH_RESULT': 'OK'}, 200
             else:
                 session['user'] = None
                 return {'AUTH_RESULT': 'AUTHENTICATION_FAILED'}, 401
         else:
-            if user is not None and password == user.psw:
+            if res is not None and password != "" and password == res.psw:
+                user = getUser(uid=res.id)
                 session['user'] = user
                 return {'AUTH_RESULT': 'OK'}, 200
             else:

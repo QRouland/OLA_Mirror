@@ -34,14 +34,18 @@ class UserAPI(Resource):
 
     def put(self, uid):
         args = request.get_json(cache=False, force=True)
-        if not checkParams(['role', 'email', 'phone', 'name', 'password'], args):
+        if not checkParams(['role', 'email', 'phone', 'name', 'password', 'firstname'], args):
             return {"ERROR": "One or more parameters are missing !"}, 400
 
         role = args['role']
         email = args['email']
         phone = args['phone']
+        firstname = args['firstname']
         name = args['name']
         psw = args['password']
+
+        name = firstname.title() + " " + name.upper()
+        # TODO : Lors de l'ajout des fiches d'absence ca sera ça le critère de recherche + le groupe
 
         if psw is None or len(psw) < 8:
             return {"ERROR": "Password can't be empty or less than 8 characters !"}, 400
@@ -64,5 +68,5 @@ class UserAPI(Resource):
             return {'USER': getUser(uid=uid)}, 200
         elif email != "":
             return {'USER': getUser(email=email)}, 200
-        elif hash != "":
+        elif hashcode != "":
             return {'USER': getUser(hashcode=hashcode)}, 200

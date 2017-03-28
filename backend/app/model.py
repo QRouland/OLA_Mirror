@@ -27,7 +27,7 @@ def getParam(key):
 def getUser(uid=0, email="", hashcode=""):
     res = None
 
-    if uid == 0 and email == "":
+    if uid == 0 and email == "" and hashcode == "":
         raise Exception("getUser must be called with one argument !")
     else:
         if uid != 0:

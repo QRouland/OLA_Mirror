@@ -24,7 +24,7 @@ def getParam(key):
     return rows.first().value
 
 
-def getUser(uid=0, email=""):
+def getUser(uid=0, email="", hashcode=""):
     res = None
 
     if uid == 0 and email == "":
@@ -37,6 +37,11 @@ def getUser(uid=0, email=""):
 
         elif email != "":
             query = USER.select(USER.c.email == email)
+            rows = query.execute()
+            res = rows.first()
+
+        elif hashcode != "":
+            query = USER.select(USER.c.hash == hashcode)
             rows = query.execute()
             res = rows.first()
 

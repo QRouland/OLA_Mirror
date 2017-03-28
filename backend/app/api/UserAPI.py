@@ -59,8 +59,10 @@ class UserAPI(Resource):
         query.execute()
         return {"UID": uid}, 200
 
-    def get(self, uid=0, email=""):
+    def get(self, uid=0, email="", hashcode=""):
         if uid > 0:
             return {'USER': getUser(uid=uid)}, 200
         elif email != "":
             return {'USER': getUser(email=email)}, 200
+        elif hash != "":
+            return {'USER': getUser(hashcode=hashcode)}, 200

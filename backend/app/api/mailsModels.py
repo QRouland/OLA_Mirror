@@ -4,8 +4,8 @@ _NEW_STUD_OF_GROUP = ("Votre compte OLA a été créé !", "Bonjour,<br/><p>Votr
                                                        "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
 
 _STUD_OF_GROUP = (
-"Vous avez été ajouté à un groupe OLA !", "Bonjour,<br/><p>Votre compte vient d'être ajouté dans l'Outil du "
-                                          "Livret de l'Alternant au groupe <b>#GROUPE</b>. Vous pouvez dès "
+    "Vous avez été ajouté à un groupe OLA !", "Bonjour,<br/><p>Votre compte vient d'être ajouté dans l'Outil du "
+                                              "Livret de l'Alternant au groupe <b>#GROUPE</b>. Vous pouvez dès "
                                               "maintenant créer un livret en vous rendant à l'adresse : <br/>"
                                               "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
 
@@ -15,10 +15,10 @@ _NEW_RESP_OF_GROUP = ("Votre compte OLA a été créé !", "Bonjour,<br/><p>Votr
                                                        "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
 
 _RESP_OF_GROUP = (
-"Vous avez été ajouté à un groupe OLA !", "Bonjour,<br/><p>Votre compte vient d'être ajouté dans l'Outil du "
-                                          "Livret de l'Alternant en tant que responsable du groupe <b>#GROUPE</b>. Vous pouvez dès "
-                                          "maintenant y accéder en vous rendant à l'adresse : <br/>"
-                                          "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
+    "Vous avez été ajouté à un groupe OLA !", "Bonjour,<br/><p>Votre compte vient d'être ajouté dans l'Outil du "
+                                              "Livret de l'Alternant en tant que responsable du groupe <b>#GROUPE</b>. Vous pouvez dès "
+                                              "maintenant y accéder en vous rendant à l'adresse : <br/>"
+                                              "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
 
 _NEW_SEC_OF_GROUP = ("Votre compte OLA a été créé !", "Bonjour,<br/><p>Votre compte vient d'être créé dans l'Outil du "
                                                       "Livret de l'Alternant en tant que secrétaire du groupe <b>#GROUPE</b>. Vous pouvez dès "
@@ -26,10 +26,10 @@ _NEW_SEC_OF_GROUP = ("Votre compte OLA a été créé !", "Bonjour,<br/><p>Votre
                                                       "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
 
 _SEC_OF_GROUP = (
-"Vous avez été ajouté à un groupe OLA !", "Bonjour,<br/><p>Votre compte vient d'être ajouté dans l'Outil du "
-                                          "Livret de l'Alternant en tant que secrétaire du groupe <b>#GROUPE</b>. Vous pouvez dès "
-                                          "maintenant y accéder en vous rendant à l'adresse : <br/>"
-                                          "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
+    "Vous avez été ajouté à un groupe OLA !", "Bonjour,<br/><p>Votre compte vient d'être ajouté dans l'Outil du "
+                                              "Livret de l'Alternant en tant que secrétaire du groupe <b>#GROUPE</b>. Vous pouvez dès "
+                                              "maintenant y accéder en vous rendant à l'adresse : <br/>"
+                                              "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
 
 
 def getMailContent(mail_type, args):

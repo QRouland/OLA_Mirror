@@ -24,7 +24,7 @@ class GroupAPI(Resource):
         department = args['department']
         resp_id = args['resp_id']
         sec_id = args['sec_id']
-        res_dir = getParam('URL_BASE_DIRECTORY') + name + "/"
+        res_dir = getParam('BASE_DIRECTORY') + name + "/"
         mails = []
 
         group = getGroup(name=name)
@@ -97,7 +97,7 @@ class GroupAPI(Resource):
         department = args['department']
         resp_id = args['resp_id']
         sec_id = args['sec_id']
-        res_dir = getParam('URL_BASE_DIRECTORY') + name + "/"
+        res_dir = getParam('BASE_DIRECTORY') + name + "/"
         mails = []
 
         group = getGroup(gid=gid)

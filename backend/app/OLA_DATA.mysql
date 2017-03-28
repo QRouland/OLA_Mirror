@@ -12,7 +12,7 @@ INSERT INTO `USER` VALUES (6, 'tut', '3', 'tut@univ-tlse2.fr', '01.23.45.67.89')
 INSERT INTO `GROUP` VALUES (1, 'M2_ICE_2016-2017_TEST', '2017', 'Master2 ICE', 'Master 2 Informatique Collaborative en Entreprise', 'Sciences du chômage proffessionnel', 5, 1, '/home/dan/PycharmProjects/OLA/backend/app/OLA_RESSOURCES/M2_ICE_2016-2017_TEST');
 INSERT INTO `GROUP` VALUES (2, 'M1_ICE_2016-2017_TEST', '2017', 'Master1 ICE', 'Master 1 Informatique Collaborative en Entreprise', 'Sciences du chômage proffessionnel', 5, 1, '/home/dan/PycharmProjects/OLA/backend/app/OLA_RESSOURCES/M1_ICE_2016-2017_TEST');
 
-INSERT INTO TUTORSHIP VALUES (DEFAULT, 1, 5, 2);
-INSERT INTO TUTORSHIP VALUES (DEFAULT, 2, 5, 4);
-INSERT INTO TUTORSHIP VALUES (DEFAULT, 1, 6, 3);
+INSERT INTO TUTORSHIP VALUES (DEFAULT, 1, 2, 5);
+INSERT INTO TUTORSHIP VALUES (DEFAULT, 2, 4, 5);
+INSERT INTO TUTORSHIP VALUES (DEFAULT, 1, 3, 6);
 

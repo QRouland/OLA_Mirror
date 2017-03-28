@@ -26,7 +26,7 @@ UserAPI (api/user)
 POST -> Create a user if it not already exists
     In:
         email = Email and login of the user (must be unique)
-        role = Role of the user (can be concatenated with -) 1=secrétaire, 2=resp_formation, 3=tuteur_univ, 4=étudiant
+        role = Role of the user (can be concatenated with -) 1=secrétaire, 2=resp_formation, 3=tuteur_univ, 4=étudiant, 5=tuteur_ent
     Out:
         200 -> UID = <USER_ID> : The user already exists with the id USER_ID
         201 -> UID = <USER_ID> : The user has been successfully created with the id USER_ID
@@ -34,7 +34,7 @@ POST -> Create a user if it not already exists
 
 PUT -> Modify an existing user
     In: (Suffix = /byuid/<USER_ID>)
-        role = Role of the user (can be concatenated with -) 1=secrétaire, 2=resp_formation, 3=tuteur_univ, 4=étudiant
+        role = Role of the user (can be concatenated with -) 1=secrétaire, 2=resp_formation, 3=tuteur_univ, 4=étudiant, 5=tuteur_ent
         phone = Phone number of the user (00.00.00.00.00)
         email = Email of the user (must be unique)
     Out:

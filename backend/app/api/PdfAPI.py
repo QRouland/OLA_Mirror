@@ -5,9 +5,9 @@ from model import getParam
 
 import os
 
-class LoginAPI(Resource):
+class PdfAPI(Resource):
     """
-        Login Api Resource
+        Pdf Api Resource
     """
 
     def delete(self):
@@ -18,5 +18,4 @@ class LoginAPI(Resource):
         if ".." in args:
             return { "msg" : ".. not allowed in path"}, 400
 
-        delete_file(os.path.join(getParam('TEMPLATES_DIRECTORY'), args['file']))
-
+        delete_file(os.path.join(getParam('TEMPLATES_DIRECTORY'), args['templateName']))

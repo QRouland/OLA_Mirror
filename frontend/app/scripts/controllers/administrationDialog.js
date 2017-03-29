@@ -9,8 +9,9 @@
      * Controller of the frontendApp
      */
     angular.module('clientApp')
-        .controller('AdministrationDialogCtrl', function ($scope, $state, FileUploader, $mdDialog, fileNameFilter, illegalFileNamesFilter) {
+        .controller('AdministrationDialogCtrl', function ($scope, $state, FileUploader, $mdDialog, fileNameFilter, illegalFileNamesFilter, type) {
 
+            console.log(type);
 
             // Public methods -------------------  
 
@@ -27,11 +28,11 @@
             };
 
             $scope.allDocumentsAreIllegal = function() {
-                return (fileNameFilter(uploader.queue, 'absence').length === 0);
+                return (fileNameFilter(uploader.queue, type).length === 0);
             };
 
             $scope.areThereIllegalFiles = function() {
-                return (illegalFileNamesFilter(uploader.queue, 'absence').length !== 0);
+                return (illegalFileNamesFilter(uploader.queue, type).length !== 0);
             };
 
             var uploader = $scope.uploader = new FileUploader({

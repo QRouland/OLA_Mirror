@@ -15,7 +15,8 @@
         logout,
         deleteAbsence,
         deleteTrackingSheet,
-        importAbsences
+        importAbsences,
+        importVisitSheets
       })
 
       init();
@@ -34,14 +35,32 @@
         $scope.formationGroups[groupIndex].trackingSheets.splice(trackingSheetIndex, 1);
       }
 
-      function importAbsences(ev, type) {
+      function importVisitSheets(ev) {
+        $mdDialog.show({
+          controller: 'AdministrationDialogCtrl',
+          templateUrl: 'import-fiches-visite',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          fullscreen: 'false',
+          locals : { type : 'visit'}
+        })
+          .then(function (answer) {
+            $scope.status = 'You said the information was "' + answer + '".';
+          }, function () {
+            $scope.status = 'You cancelled the dialog.';
+          });
+      }
+
+      function importAbsences(ev) {
         $mdDialog.show({
           controller: 'AdministrationDialogCtrl',
           templateUrl: 'import-fiches-absences',
           parent: angular.element(document.body),
           targetEvent: ev,
           clickOutsideToClose: true,
-          fullscreen: 'false'
+          fullscreen: 'false',
+          locals : { type : 'absence'}
         })
           .then(function (answer) {
             $scope.status = 'You said the information was "' + answer + '".';

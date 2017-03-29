@@ -61,7 +61,7 @@
                                     </div>
                                     <br />
                                     <center>
-                                        <md-button class="md-raised md-primary">Importer des fiches de visite</md-button>
+                                        <md-button class="md-raised md-primary" ng-click="importVisitSheets($event)">Importer des fiches de visite</md-button>
                                     </center>
                                 </md-content>
                             </md-card-content>
@@ -106,7 +106,7 @@
 
                                 <div ng-if="areThereIllegalFiles()" style="background-color: #ef9a9a; padding: 2px 10px 2px 10px;margin: 10px 0 10px 0">
                                     <p>
-                                        Les documents suivants ne respecte pas la règle de nommage :
+                                        Les documents suivants ne respectent pas la règle de nommage :
                                     </p>
                                     <ul>
                                         <li ng-repeat="fileName in uploader.queue | illegalFileNames:'absence'">{{fileName}}</li>
@@ -125,6 +125,121 @@
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="item in uploader.queue | fileName:'absence'">
+                                                <td><strong>{{ item.file.name }}</strong></td>
+                                                <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                <td class="text-center">
+                                                    <span ng-show="item.isSuccess">
+                                                    <ng-md-icon icon="done" size="24"></ng-md-icon>
+                                                </span>
+                                                    <span ng-show="item.isCancel">
+                                                    <ng-md-icon icon="cancel" size="24"></ng-md-icon>
+                                                </span>
+                                                    <span ng-show="item.isError">
+                                                    <ng-md-icon icon="remove_circle_outline" size="24"></ng-md-icon>
+                                                </span>
+                                                </td>
+                                                <td nowrap>
+                                                    <md-button type="button" class="md-raised md-primary" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                        <ng-md-icon icon="file_upload" size="24"></ng-md-icon> Charger
+                                                    </md-button>
+                                                    <md-button type="button" class="md-raised" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                        <ng-md-icon icon="cancel" size="24"></ng-md-icon> Annuler
+                                                    </md-button>
+                                                    <md-button type="button" class="md-raised md-warn" ng-click="item.remove()">
+                                                        <ng-md-icon icon="remove_circle_outline" size="24"></ng-md-icon> Supprimer
+                                                    </md-button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div style='margin-top : 40px'>
+                                        <div>
+                                            Niveau de progression :
+                                            <md-progress-linear md-mode="determinate" value="{{uploader.progress}}"></md-progress-linear>
+                                        </div>
+                                        <md-button type="button" class="md-raised md-primary" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                                            <ng-md-icon icon="file_upload" size="24"></ng-md-icon> Tout charger
+                                        </md-button>
+                                        <md-button type="button" class="md-raised" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+                                            <ng-md-icon icon="cancel" size="24"></ng-md-icon> Tout annuler
+                                        </md-button>
+                                        <md-button type="button" class="md-raised md-warn" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                                            <ng-md-icon icon="remove_circle_outline" size="24"></ng-md-icon> Tout supprimer
+                                        </md-button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <span flex></span>
+                <md-button ng-click="answer('useful')">
+                    Fermer
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+
+<script type="text/ng-template" id="import-fiches-visite">
+
+    <md-dialog aria-label="Importer des fiches de visite">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Importer des fiches de visite</h2>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+
+                    <div layout="row">
+
+                        <div flex>
+
+                            <h3>Importer des fiches de visite</h3>
+                            <input type="file" nv-file-select="" accept=".pdf" uploader="uploader" multiple /><br/><br/>
+
+                            <p class="note">
+                                <ng-md-icon icon="warning" size="20"></ng-md-icon>
+                                Note d'utilisation : chaque fiche de visite doit respecter une règle de nommage.<br/> Nom
+                                de fichier : Visite_Prenom_Nom_N.pdf<br/>
+                                <i>Le N étant un numéro.</i>
+                            </p>
+
+                            <div ng-if="uploader.queue.length !== 0">
+                                <h3>Liste des documents : </h3>
+                                <p>Nombre de documents : {{ uploader.queue.length }}</p>
+
+                                <div ng-if="areThereIllegalFiles()" style="background-color: #ef9a9a; padding: 2px 10px 2px 10px;margin: 10px 0 10px 0">
+                                    <p>
+                                        Les documents suivants ne respectent pas la règle de nommage :
+                                    </p>
+                                    <ul>
+                                        <li ng-repeat="fileName in uploader.queue | illegalFileNames:'visit'">{{fileName}}</li>
+                                    </ul>
+                                </div>
+
+                                <div ng-if="!allDocumentsAreIllegal()">
+                                    <table class="bordered">
+                                        <thead>
+                                            <tr>
+                                                <th width="50%">Nom</th>
+                                                <th ng-show="uploader.isHTML5">Taille</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="item in uploader.queue | fileName:'visit'">
                                                 <td><strong>{{ item.file.name }}</strong></td>
                                                 <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
                                                 <td class="text-center">

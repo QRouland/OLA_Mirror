@@ -14,7 +14,8 @@ var app = angular.module('clientApp', [
     'ngSanitize',
     'ngMaterial',
     'ui.router',
-    'ngMdIcons'
+    'ngMdIcons',
+    'angularFileUpload'
   ]);
 
 app.config(function ($stateProvider, $urlRouterProvider) {
@@ -36,5 +37,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             url: '/espace-etudiant',
             templateUrl: 'views/studentSpace.html',
             controller: 'StudentSpaceCtrl'
+        })
+
+        .state('administrationSpace', {
+            url: '/espace-secretariat',
+            templateUrl: 'views/administrationSpace.html',
+            controller: 'AdministrationSpaceCtrl'
         });
     });

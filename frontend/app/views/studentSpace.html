@@ -13,73 +13,37 @@
 </div>
 
 <div layout="row" layout-align="center none">
-  <md-content flex="80">
-    <div layout="row" layout-align="end">
-      <md-button class="md-raised" ng-click="exportBooklet()">Exporter le livret</md-button>
-    </div>
-
-    <md-card ng-repeat="period in periods">
-      <md-card-title>
-        <md-card-title-text>
-          <h2 class="md-display-1">Période {{period.number}}</h2>
-        </md-card-title-text>
-      </md-card-title>
-      <md-card-content>
-
-
-        <div layout="column" layout-fill>
-          <div flex class="green darken-2">
-            <h3 class="md-headline" style="padding-left : 10px">
-              Université
-              <md-button class="md-icon-button" ng-click="toggleAccordion(period.university.icon, 'false', $index)" aria-label="call">
-                <ng-md-icon icon="{{period.university.icon}}" style="fill: blue" size="24"></ng-md-icon>
-              </md-button>
-            </h3>
-
-            <md-content flex layout-padding ng-if="isOpenAccordion(period.university.icon)">
-              <p>Lorem ipsum dolor sit amet, ne quod novum mei. Sea omnium invenire mediocrem at, in lobortis conclusionemque
-                nam. Ne deleniti appetere reprimique pro, inani labitur disputationi te sed. At vix sale omnesque, id pro
-                labitur reformidans accommodare, cum labores honestatis eu. Nec quem lucilius in, eam praesent reformidans
-                no. Sed laudem aliquam ne.</p><br/>
-
-              <md-input-container class="md-block">
-                <label>Commentaire de période</label>
-                <textarea ng-model="period.university.comment" md-maxlength="150" rows="5" md-select-on-focus></textarea>
-              </md-input-container>
-
-              <div layout="row" layout-align="end">
-                <md-button class="md-raised">Enregistrer</md-button>
-              </div>
-            </md-content>
-          </div>
-
-          <div flex class="green darken-3">
-            <h3 class="md-headline" style="padding-left : 10px">
-              Entreprise
-              <md-button class="md-icon-button" ng-click="toggleAccordion(period.company.icon, 'true', $index)" aria-label="call">
-                <ng-md-icon icon="{{period.company.icon}}" style="fill: blue" size="24"></ng-md-icon>
-              </md-button>
-            </h3>
-
-            <md-content flex layout-padding ng-if="isOpenAccordion(period.company.icon)">
-              <p>Lorem ipsum dolor sit amet, ne quod novum mei. Sea omnium invenire mediocrem at, in lobortis conclusionemque
-                nam. Ne deleniti appetere reprimique pro, inani labitur disputationi te sed. At vix sale omnesque, id pro
-                labitur reformidans accommodare, cum labores honestatis eu. Nec quem lucilius in, eam praesent reformidans
-                no. Sed laudem aliquam ne.</p>
-
-              <md-input-container class="md-block">
-                <label>Commentaire de période</label>
-                <textarea ng-model="period.company.comment" md-maxlength="150" rows="5" md-select-on-focus></textarea>
-              </md-input-container>
-
-              <div layout="row" layout-align="end">
-                <md-button class="md-raised">Enregistrer</md-button>
-              </div>
-            </md-content>
-          </div>
+  <div ng-controller="AppCtrl" class="sample" layout="column" ng-cloak>
+  <md-content class="md-padding">
+    <md-tabs md-selected="selectedIndex" md-border-bottom md-autoselect>
+      <md-tab ng-repeat="tab in tabs"
+              ng-disabled="tab.disabled"
+              label="{{tab.title}}">
+        <div class="demo-tab tab{{$index%4}}" style="padding: 25px; text-align: center;">
+          <div ng-bind="tab.content"></div>
+          <br/>
+          <md-button class="md-primary md-raised" ng-click="removeTab( tab )" ng-disabled="tabs.length <= 1">Remove Tab</md-button>
         </div>
-      </md-card-content>
-    </md-card>
-
+      </md-tab>
+    </md-tabs>
   </md-content>
+
+  <form ng-submit="addTab(tTitle,tContent)" layout="column" class="md-padding" style="padding-top: 0;">
+    <div layout="row" layout-sm="column">
+      <div flex style="position: relative;">
+        <h2 class="md-subhead" style="position: absolute; bottom: 0; left: 0; margin: 0; font-weight: 500; text-transform: uppercase; line-height: 35px; white-space: nowrap;">Add a new Tab:</h2>
+      </div>
+      <md-input-container>
+        <label for="label">Label</label>
+        <input type="text" id="label" ng-model="tTitle">
+      </md-input-container>
+      <md-input-container>
+        <label for="content">Content</label>
+        <input type="text" id="content" ng-model="tContent">
+      </md-input-container>
+      <md-button class="add-tab md-primary md-raised" ng-disabled="!tTitle || !tContent" type="submit" style="margin-right: 0;">Add Tab</md-button>
+    </div>
+  </form>
+
+</div>
 </div>

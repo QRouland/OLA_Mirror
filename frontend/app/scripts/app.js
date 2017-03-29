@@ -36,5 +36,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             url: '/espace-etudiant',
             templateUrl: 'views/studentSpace.html',
             controller: 'StudentSpaceCtrl'
+        })
+        
+        .state('responsableFormationSpace', {
+            url: '/espace-formation',
+            templateUrl: 'views/responsableFormationSpace.html',
+            controller: 'ResponsableFormationSpaceCtrl'
         });
     });

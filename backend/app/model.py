@@ -1,11 +1,10 @@
 from sqlalchemy import Table
-from sqlalchemy import or_
+from sqlalchemy import and_
 
-from app.core import meta, db, Base
+from app.core import meta, Base
 
 USER = Table('USER', meta, autoload=False)
 SETTINGS = Table('SETTINGS', meta, autoload=False)
-HASHTABLE = Table('HASHTABLE', meta, autoload=False)
 GROUP = Table('GROUP', meta, autoload=False)
 TUTORSHIP = Table('TUTORSHIP', meta, autoload=False)
 PERIOD = Table('PERIOD', meta, autoload=False)
@@ -13,24 +12,26 @@ LIVRET = Table('LIVRET', meta, autoload=False)
 
 user_class = Base.classes.USER
 settings_class = Base.classes.SETTINGS
-hashtable_class = Base.classes.HASHTABLE
 group_class = Base.classes.GROUP
 tutorship_class = Base.classes.TUTORSHIP
 period_class = Base.classes.PERIOD
 livret_class = Base.classes.LIVRET
 
 
-def getUser(uid=0, login="", email=""):
+def getParam(key):
+    query = SETTINGS.select(SETTINGS.c.key == key)
+    rows = query.execute()
+    return rows.first().value
+
+
+def getUser(uid=0, email="", hashcode=""):
     res = None
 
-    if uid == 0 and login == "" and email == "":
+    if uid == 0 and email == "" and hashcode == "":
         raise Exception("getUser must be called with one argument !")
     else:
         if uid != 0:
-            res = db.session.query(user_class).get(uid)
-
-        elif login != "":
-            query = USER.select(USER.c.login == login)
+            query = USER.select(USER.c.id == uid)
             rows = query.execute()
             res = rows.first()
 
@@ -39,14 +40,54 @@ def getUser(uid=0, login="", email=""):
             rows = query.execute()
             res = rows.first()
 
+        elif hashcode != "":
+            query = USER.select(USER.c.hash == hashcode)
+            rows = query.execute()
+            res = rows.first()
+
         if res is not None:
-            return {"id": res.id, "login": res.login, "email": res.email, "role": res.role, "phone": res.phone}
+            return {"id": res.id, "email": res.email, "role": res.role, "phone": res.phone, "name": res.name}
         else:
             return None
 
 
-def isUserAllowed(uid):
-    query = db.session.query(group_class, tutorship_class).join(tutorship_class) \
-        .filter(or_(tutorship_class.student_id == uid, group_class.resp_id == uid))
-    res = query.all()
-    return res is not None and len(res) > 0
+def getGroup(gid=0, name=""):
+    res = None
+
+    if gid == 0 and name == "":
+        raise Exception("getGroup must be called with one argument !")
+    else:
+        if gid != 0:
+            query = GROUP.select(GROUP.c.id == gid)
+            rows = query.execute()
+            res = rows.first()
+
+        elif name != "":
+            query = GROUP.select(GROUP.c.name == name)
+            rows = query.execute()
+            res = rows.first()
+
+        if res is not None:
+            return {"id": res.id, "name": res.name, "year": res.year, "class_short": res.class_short,
+                    "class_long": res.class_long, "department": res.department, "resp_id": getUser(uid=res.resp_id),
+                    "sec_id": getUser(uid=res.sec_id), "ressources_dir": res.ressources_dir}
+        else:
+            return None
+
+
+def getTutorshipForStudent(gid, student):
+    query = TUTORSHIP.select(and_(TUTORSHIP.c.group_id == gid, TUTORSHIP.c.student_id == student))
+    rows = query.execute()
+    res = rows.first()
+    if res is not None:
+        return {"id": res.id, "group_id": getGroup(gid=res.group_id), "student_id": getUser(uid=res.student_id),
+                "ptutor_id": getUser(uid=res.ptutor_id)}
+    else:
+        return None
+
+
+def hashExists(test):
+    query = USER.select(USER.c.hash == test)
+    rows = query.execute()
+    res = rows.first()
+    return res is not None

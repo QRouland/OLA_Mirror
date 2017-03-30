@@ -20,20 +20,13 @@ GET -> Get the current logged user, return None if no one is connected
     Out:
         200 -> USER = <USER_OBJECT>|null : Dictionary containing user infos or null
 
-
-########################
-Redirect to cas auth (/login)
-########################
-Redirect to cas auth
-
-
 ########################
 UserAPI (api/user)
 ########################
 POST -> Create a user if it not already exists
     In:
-        CASid = Login of the user caught from the CAS authentication
-        role = Role of the user (can be concatenated with -) 1=secrétaire, 2=resp_formation, 3=tuteur_univ, 4=étudiant
+        email = Email and login of the user (must be unique)
+        role = Role of the user (can be concatenated with -) 1=secrétaire, 2=resp_formation, 3=tuteur_univ, 4=étudiant, 5=tuteur_ent
     Out:
         200 -> UID = <USER_ID> : The user already exists with the id USER_ID
         201 -> UID = <USER_ID> : The user has been successfully created with the id USER_ID
@@ -41,17 +34,67 @@ POST -> Create a user if it not already exists
 
 PUT -> Modify an existing user
     In: (Suffix = /byuid/<USER_ID>)
-        CASid = Login of the user caught from the CAS authentication
-        role = Role of the user (can be concatenated with -) 1=secrétaire, 2=resp_formation, 3=tuteur_univ, 4=étudiant
+        role = Role of the user (can be concatenated with -) 1=secrétaire, 2=resp_formation, 3=tuteur_univ, 4=étudiant, 5=tuteur_ent
         phone = Phone number of the user (00.00.00.00.00)
-        email = Email of the user
+        email = Email of the user (must be unique)
     Out:
         200 -> UID = <USER_ID> : The user has been modified sucessfully with the id USER_ID
         400 -> ERROR = "One or more parameters are missing !" : Bad request
         405 -> ERROR = "This user doesn't exists !" : Bad USER_ID provided
+        405 -> ERROR = "A user with this email already exists !" : A user with this email already exists
 
 GET -> Getting specified user infos
-    In: (Suffixes = /byuid/<USER_ID> | /bylogin/<USER_LOGIN> | /byemail/<USER_EMAIL>)
+    In: (Suffixes = /byuid/<USER_ID> | /byemail/<USER_EMAIL>)
     Out:
         200 -> USER = <USER_OBJECT>|null : Dictionary containing user infos or null
 
+########################
+GroupAPI (api/group)
+########################
+POST -> Create a group if it not already exists
+    In:
+        name = Name of the group (must be unique)
+        year = Parameter setting the year
+        class_short = Parameter setting the short name of the class
+        class_long = Parameter setting the full name of the class
+        department = Parameter setting the name of the class's department
+        resp_id = UID of the group's responsible
+        sec_id = UID of the group's secretary
+    Out:
+        200 -> GID = <GROUP_ID> : The group already exists with the id GROUP_ID
+        201 -> GID = <GROUP_ID> : The group has been successfully created with the id GROUP_ID
+        400 -> ERROR = "One or more parameters are missing" : Bad request
+        400 -> ERROR = "The user with id <USER_ID> doesn't exists !" : The given USER_ID for resp_id or sec_id is not found
+
+PUT -> Modify an existing group
+    In: (Suffix = /bygid/<GROUP_ID>)
+        name = Name of the group (must be unique)
+        year = Parameter setting the year
+        class_short = Parameter setting the short name of the class
+        class_long = Parameter setting the full name of the class
+        department = Parameter setting the name of the class's department
+        resp_id = UID of the group's responsible
+        sec_id = UID of the group's secretary
+    Out:
+        200 -> GID = <GROUP_ID> : The group has been modified sucessfully with the id GROUP_ID
+        400 -> ERROR = "One or more parameters are missing !" : Bad request
+        400 -> ERROR = "The user with id <USER_ID> doesn't exists !" : The given USER_ID for resp_id or sec_id is not found
+        405 -> ERROR = "This group doesn't exists !" : Bad GROUP_ID provided
+        405 -> ERROR = "A group with this name already exists !" : A group with this name already exists
+
+GET -> Getting specified group infos
+    In: (Suffixes = /bygid/<GROUP_ID> | /byname/<GROUP_NAME> )
+    Out:
+        200 -> GROUP = <GROUP_OBJECT>|null : Dictionary containing group infos or null
+
+OPTIONS -> Add pairs of users (student/tutor) to the group
+    In:
+        pairs -> Table of pairs student's uid/tutor's uid (ex: [[1,2],[3,2]])
+    Out:
+        200 -> RESULT = "Pairs added successfully"
+        400 -> ERROR = "One or more parameters are missing !" : Bad request
+        400 -> ERROR = "The user with id <USER_ID> doesn't exists !" : The given USER_ID for student or tutor is not found
+        400 -> ERROR = "A student must have the 'student' role !" : The given USER_ID for student doesn't have the "student" role (4)
+        400 -> ERROR = "A student can't be a tutor !" : The given USER_ID for tutor have the "student" role (4) and so can't be a tutor
+        405 -> ERROR = "This group doesn't exists !" : Bad GROUP_ID provided
+        409 -> ERROR = "Pairs are incorrectly formed !" : Bad syntax in pairs table

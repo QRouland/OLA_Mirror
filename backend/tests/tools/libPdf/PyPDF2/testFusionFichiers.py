@@ -1,9 +1,7 @@
 import os
 import unittest
-
-from pathlib import Path
-
 from builtins import print
+from pathlib import Path
 
 from app.tools.FusionPdf import fusion_fichiers, get_pdf_from_directory
 

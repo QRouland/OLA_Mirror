@@ -46,7 +46,7 @@ class AuthTestCase(unittest.TestCase):
         return self.app.post('/api/login',
                              data=json.dumps(
                                  dict(
-                                     login=email,
+                                     email=email,
                                      password=password
                                  )
                              ), content_type='application/json')
@@ -58,34 +58,30 @@ class AuthTestCase(unittest.TestCase):
         return self.app.delete('/api/login')
 
     def test_login_logout(self):
-        rv = self.login('admin', 'admin')
+        rv = self.login('admin@admin.com', 'admin@admin.com')
         self.assertEqual(rv.status_code, 200, 'Login as admin Failed')
 
-        rv = self.login('admin', 'admin')
+        rv = self.login('admin@admin.com', 'admin@admin.com')
         self.assertEqual(rv.status_code, 201, 'Login as admin succeed but should have already been done')
 
         rv = self.getUserInfo()
         self.assertEqual(rv.status_code, 200, 'Getting user info failed')
-        self.assertEqual({"id": getUser(login="admin")["id"], "login": "admin", "email": "admin@admin.com", "role": 4,
+        self.assertEqual({"id": getUser(login="admin")["id"], "login": "admin", "email": "admin@admin.com", "role": "4",
                           "phone": "00.00.00.00.00"}, json.loads(rv.data)['USER'], 'Invalid user info')
 
         rv = self.logout()
         self.assertEqual(rv.status_code, 200, 'Logout Failed')
 
-        rv = self.login('adminx', 'admin')
-        self.assertEqual(rv.status_code, 401, 'Authentication from CAS has not failed for the invalid user xadmin !')
+        rv = self.login('adminx@admin.com', 'admin@admin.com')
+        self.assertEqual(rv.status_code, 401, 'Authentication not failed for the invalid user!')
 
         rv = self.getUserInfo()
         self.assertEqual(rv.status_code, 200, 'Getting user info failed')
         self.assertIsNone(json.loads(rv.data)['USER'], 'User info should be None')
 
-        rv = self.login('admin', 'adminx')
+        rv = self.login('admin@admin.com', 'admin@admin.comx')
         self.assertEqual(rv.status_code, 401,
-                         'Authentication from CAS has not failed for the invalid password xadmin !')
-
-        rv = self.login('toto', 'toto')
-        self.assertEqual(rv.status_code, 403, 'Authentication shouldn\'t be allowed for user toto !')
-
+                         'Authenticationnot failed for the invalid password !')
 
 if __name__ == '__main__':
     unittest.main()

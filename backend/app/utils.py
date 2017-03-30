@@ -3,7 +3,11 @@ import string
 from hashlib import sha512
 
 from flask import json
+from mailer import Mailer
+from mailer import Message
 from sqlalchemy.ext.declarative import DeclarativeMeta
+
+from app.core import app
 
 SIMPLE_CHARS = string.ascii_letters + string.digits
 
@@ -57,3 +61,12 @@ def new_alchemy_encoder(revisit_self=False, fields_to_expand=[]):
 def checkParams(wanted, args):
     inter = [elt for elt in wanted if elt in args]
     return len(inter) == len(wanted)
+
+
+def send_mail(subject, to, html):
+    if app.config['MAILER']:
+        message = Message(From="ola.noreply@univ-tlse2.fr", To=to, charset="utf-8")
+        message.Subject = subject
+        message.Html = html
+        sender = Mailer('localhost')  # TODO: Mettre le SMTP de la fac ici
+        sender.send(message)

@@ -37,11 +37,13 @@ CREATE TABLE IF NOT EXISTS `GROUP`
 
 CREATE TABLE IF NOT EXISTS `USER`
 (
-  id      BIGINT       NOT NULL AUTO_INCREMENT,
-  `login` VARCHAR(128) NOT NULL,
-  `role`  VARCHAR(10)  NOT NULL,
-  email   VARCHAR(256) NOT NULL,
-  phone   VARCHAR(15),
+  id     BIGINT       NOT NULL AUTO_INCREMENT,
+  `role` VARCHAR(10)  NOT NULL,
+  email  VARCHAR(128) NOT NULL,
+  name   VARCHAR(128) NOT NULL,
+  psw    VARCHAR(256)          DEFAULT NULL,
+  hash   VARCHAR(128),
+  phone  VARCHAR(15),
     PRIMARY KEY(id)
 ) ENGINE = INNODB;
 
@@ -56,19 +58,17 @@ CREATE TABLE IF NOT EXISTS TUTORSHIP
 
 CREATE TABLE IF NOT EXISTS LIVRET
 (
-  id              BIGINT NOT NULL AUTO_INCREMENT,
-  tutorship_id    BIGINT,
-  etutor_name     VARCHAR(128) NOT NULL,
-  etutor_email    VARCHAR(256) NOT NULL,
-  etutor_phone    VARCHAR(15) NOT NULL,
+  id              BIGINT       NOT NULL AUTO_INCREMENT,
+  tutorship_id    BIGINT       NOT NULL,
+  etutor_id       BIGINT       NOT NULL,
   company_name    VARCHAR(256) NOT NULL,
   company_address VARCHAR(512) NOT NULL,
-  contract_type   INT NOT NULL,
-  contract_start  DATE NOT NULL,
-  contract_end    DATE NOT NULL,
+  contract_type   INT          NOT NULL,
+  contract_start  DATE         NOT NULL,
+  contract_end    DATE         NOT NULL,
   ressources_dir  VARCHAR(512),
-  opened          TINYINT(1) NOT NULL,
-  expire          DATE NOT NULL,
+  opened          TINYINT(1)   NOT NULL,
+  expire          DATE         NOT NULL,
     PRIMARY KEY(id)
 ) ENGINE = INNODB;
 
@@ -83,14 +83,6 @@ CREATE TABLE IF NOT EXISTS PERIOD
     etutor_desc    TEXT,
     ressources_dir VARCHAR(512),
     PRIMARY KEY (id)
-) ENGINE = INNODB;
-
-CREATE TABLE IF NOT EXISTS HASHTABLE
-(
-  token     VARCHAR(255) NOT NULL,
-  exipre    DATE         NOT NULL,
-  period_id BIGINT       NOT NULL,
-    PRIMARY KEY(token)
 ) ENGINE = INNODB;
 
 
@@ -127,6 +119,10 @@ REFERENCES TUTORSHIP (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 ;
+
+ALTER TABLE LIVRET
+  ADD FOREIGN KEY (etutor_id)
+REFERENCES `USER` (id);
     
 ALTER TABLE LIVRET
   ADD FOREIGN KEY (tutorship_id)
@@ -140,14 +136,10 @@ ALTER TABLE PERIOD
 REFERENCES LIVRET (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE;
-    
-ALTER TABLE HASHTABLE
-  ADD FOREIGN KEY (period_id)
-REFERENCES PERIOD (id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-;
+
 
 # Create Indexes
-CREATE INDEX tutor_email ON LIVRET(etutor_email);
-CREATE INDEX user_login ON `USER`(`login`);
+CREATE UNIQUE INDEX user_email
+  ON `USER` (`email`);
+CREATE UNIQUE INDEX user_hash
+  ON `USER` (`hash`);

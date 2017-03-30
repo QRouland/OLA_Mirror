@@ -2,15 +2,15 @@ from hashlib import sha256
 
 from flask_restful import Resource, request
 
-from app.model import *
+from app.model import Roles, getUser, hashExists, USER
 from app.utils import checkParams, get_random_string
-
+from app.api.LoginAPI import login_required
 
 class UserAPI(Resource):
     """
         User Api Resource
     """
-
+    @login_required(roles=[Roles.resp_formation])
     def post(self):
         args = request.get_json(cache=False, force=True)
         if not checkParams(['role', 'email', 'name'], args):

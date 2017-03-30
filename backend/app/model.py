@@ -91,3 +91,11 @@ def hashExists(test):
     rows = query.execute()
     res = rows.first()
     return res is not None
+
+
+class Roles:
+    secretaire = 1
+    resp_formation = 2
+    tuteur_univ = 3
+    etudiant = 4
+    tuteur_entreprise = 5

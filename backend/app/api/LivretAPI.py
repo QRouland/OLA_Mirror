@@ -3,15 +3,15 @@ import os
 from flask_restful import Resource, request
 
 from app.api import mailsModels
-from app.model import *
-from app.utils import *
-
+from app.model import Roles, getParam, getGroup, getUser, USER, GROUP, TUTORSHIP
+from app.utils import send_mail, checkParams
+from app.api.LoginAPI import login_required
 
 class LivretAPI(Resource):
     """
         Livret Api Resource
     """
-
+    @login_required(roles=[Roles.etudiant])
     def post(self):
         args = request.get_json(cache=False, force=True)
         if not checkParams(['name', 'year', 'class_short', 'class_long', 'department', 'resp_id', 'sec_id'], args):

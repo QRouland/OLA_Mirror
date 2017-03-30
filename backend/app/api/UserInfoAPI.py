@@ -1,7 +1,7 @@
 from flask import session
 from flask_restful import Resource
-
-from app.model import *
+from app.api.LoginAPI import login_required
+from app.model import LIVRET, TUTORSHIP, and_
 
 
 class UserInfoAPI(Resource):
@@ -9,6 +9,7 @@ class UserInfoAPI(Resource):
         UserInfo Api Resource
     """
 
+    @login_required()
     def get(self):
         user = session.get("user", None)
         return {'USER': user}, 200
@@ -18,7 +19,7 @@ class UserGroupsAPI(Resource):
     """
         UserGroups Api Resource
     """
-
+    @login_required()
     def get(self):
         user = session.get("user", None)
         if user is not None:

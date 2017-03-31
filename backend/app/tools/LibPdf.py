@@ -55,13 +55,12 @@ def allowed_file(filename):
 
 def upload_file(file_to_upload, upload_folder):
     """
-    rep de l'etu avec id
-    :param file:
+    televersement d'un fichier
+    :param file_to_upload:
     :param upload_folder:
     :return:
     """
     file_to_upload.save(os.path.join(upload_folder, secure_filename(file_to_upload.filename)))
-
 
 
 def delete_file(pdf_path):

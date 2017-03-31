@@ -1,10 +1,11 @@
 from hashlib import sha256
 
+from flask import session
 from flask_restful import Resource, request
 
+from app.api.LoginAPI import login_required
 from app.model import Roles, getUser, hashExists, USER
 from app.utils import checkParams, get_random_string
-from app.api.LoginAPI import login_required
 
 class UserAPI(Resource):
     """
@@ -52,8 +53,13 @@ class UserAPI(Resource):
 
         password = sha256(psw.encode('utf-8')).hexdigest()
 
-        if getUser(uid=uid) is None:
+        user = getUser(uid=uid)
+        if user is None:
             return {"ERROR": "This user doesn't exists !"}, 405
+
+        # On n'autorise pas de modifcation anonyme d'un profil s'il est déjà activé (si il a un mdp)
+        if user["password"] is not None and user["password"] != "" and session.get("user", None) is None:
+            return {"msg": "UNAUTHORIZED"}, 401
 
         if getUser(email=email) is not None:
             return {"ERROR": "A user with this email already exists !"}, 405
@@ -64,9 +70,11 @@ class UserAPI(Resource):
         return {"UID": uid}, 200
 
     def get(self, uid=0, email="", hashcode=""):
-        if uid > 0:
-            return {'USER': getUser(uid=uid)}, 200
-        elif email != "":
-            return {'USER': getUser(email=email)}, 200
-        elif hashcode != "":
+        if session.get('user', None) is not None:
+            if uid > 0:
+                return {'USER': getUser(uid=uid)}, 200
+            elif email != "":
+                return {'USER': getUser(email=email)}, 200
+
+        if hashcode != "":
             return {'USER': getUser(hashcode=hashcode)}, 200

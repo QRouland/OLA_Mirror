@@ -11,7 +11,7 @@ _STUD_OF_GROUP = (
 
 _NEW_RESP_OF_GROUP = ("Votre compte OLA a été créé !", "Bonjour,<br/><p>Votre compte vient d'être créé dans l'Outil du "
                                                        "Livret de l'Alternant en tant que responsable du groupe <b>#GROUPE</b>. Vous pouvez dès "
-                                                       "maintenant l'activer, en vous rendant à l'adresse : <br/>"
+                                                       "maintenant l'activer en vous rendant à l'adresse : <br/>"
                                                        "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
 
 _RESP_OF_GROUP = (
@@ -22,7 +22,7 @@ _RESP_OF_GROUP = (
 
 _NEW_SEC_OF_GROUP = ("Votre compte OLA a été créé !", "Bonjour,<br/><p>Votre compte vient d'être créé dans l'Outil du "
                                                       "Livret de l'Alternant en tant que secrétaire du groupe <b>#GROUPE</b>. Vous pouvez dès "
-                                                      "maintenant l'activer, en vous rendant à l'adresse : <br/>"
+                                                      "maintenant l'activer en vous rendant à l'adresse : <br/>"
                                                       "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
 
 _SEC_OF_GROUP = (
@@ -30,6 +30,17 @@ _SEC_OF_GROUP = (
                                               "Livret de l'Alternant en tant que secrétaire du groupe <b>#GROUPE</b>. Vous pouvez dès "
                                               "maintenant y accéder en vous rendant à l'adresse : <br/>"
                                               "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
+
+_NEW_ETUTOR_ADDED = ("Votre compte OLA a été créé !", "Bonjour,<br/><p>Votre compte vient d'être créé dans l'Outil du "
+                                                      "Livret de l'Alternant de l'Université Toulouse Jean-Jaurès en tant que tuteur dans le groupe <b>#GROUPE</b>. Vous pouvez dès "
+                                                      "maintenant l'activer en vous rendant à l'adresse : <br/>"
+                                                      "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
+
+_ETUTOR_ADDED = (
+    "Vous avez été déclaré comme tuteur dans OLA !", "Bonjour,<br/><p>Votre compte vient d'être ajouté dans l'Outil du "
+                                                     "Livret de l'Alternant de l'Université Toulouse Jean-Jaurès en tant que tuteur dans le groupe <b>#GROUPE</b>. Vous pouvez dès "
+                                                     "maintenant accéder à votre compte en vous rendant à l'adresse : <br/>"
+                                                     "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
 
 
 def getMailContent(mail_type, args):
@@ -45,6 +56,10 @@ def getMailContent(mail_type, args):
         mail = _NEW_SEC_OF_GROUP
     elif mail_type == "SEC_OF_GROUP":
         mail = _SEC_OF_GROUP
+    elif mail_type == "NEW_ETUTOR_ADDED":
+        mail = _NEW_ETUTOR_ADDED
+    elif mail_type == "ETUTOR_ADDED":
+        mail = _ETUTOR_ADDED
     else:
         raise Exception("Unknown mail type !")
 

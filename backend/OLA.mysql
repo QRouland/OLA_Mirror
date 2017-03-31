@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS LIVRET
   contract_type   INT          NOT NULL,
   contract_start  DATE         NOT NULL,
   contract_end    DATE         NOT NULL,
+  description     TEXT         NOT NULL,
   ressources_dir  VARCHAR(512),
   opened          TINYINT(1)   NOT NULL,
   expire          DATE         NOT NULL,
@@ -143,3 +144,5 @@ CREATE UNIQUE INDEX user_email
   ON `USER` (`email`);
 CREATE UNIQUE INDEX user_hash
   ON `USER` (`hash`);
+CREATE UNIQUE INDEX tutorship_unique_bygroup
+  ON `TUTORSHIP` (`group_id`, `student_id`);

@@ -50,14 +50,13 @@ class LoginAPI(Resource):
         return {'AUTH_RESULT': 'OK'}, 200
 
 
-
 def login_required(roles=[]):
     def my_login_required(func):
-        def wrapper(*args):
+        def wrapper(*args, **kvargs):
             current_user = session.get('user', None)
             if current_user is None or (len(roles) != 0 and not sum([1 for x in current_user['role'].split("-") if int(x) in roles]) > 0):
-                return {"msg": "UNAUTHORIZED"}, 401
-            return func(*args)
+                return {"ERROR": "UNAUTHORIZED"}, 401
+            return func(*args, **kvargs)
         return wrapper
     return my_login_required
 

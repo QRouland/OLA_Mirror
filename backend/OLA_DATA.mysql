@@ -1,7 +1,7 @@
 USE OLA;
 INSERT INTO SETTINGS VALUES ('BASE_DIRECTORY', '/OLA_RESSOURCES/', 'Répertoire base pour le dépot des fichiers');
 INSERT INTO SETTINGS VALUES ('TEMPLATES_DIRECTORY', '/OLA_TEMPLATES/', 'Répertoire base pour le dépot des fichiers');
-INSERT INTO SETTINGS VALUES ('OLA_URL', 'ola.univ-tlse2.fr/', 'URL de l application');
+INSERT INTO SETTINGS VALUES ('OLA_URL', 'http://ola.univ-tlse2.fr/', 'URL de l application');
 
 INSERT INTO `USER` VALUES (1, '1', 'sec@univ-tlse2.fr', 'Secrétaire', DEFAULT, 'aZeRtYuIoP', '01.23.45.67.89');
 INSERT INTO `USER` VALUES (2, '4', 'etu1@univ-tlse2.fr', 'Etudiant 1', DEFAULT, 'qSdFgHjKlM', '01.23.45.67.89');

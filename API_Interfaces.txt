@@ -1,7 +1,7 @@
 #######################
 LoginAPI (api/login)
 #######################
-GET -> Authentication method 
+POST -> Authentication method
     Out:
         200 -> AUTH_RESULT = "OK" : Authentication sucessful
         401 -> AUTH_RESULT = "AUTHENTICATION_FAILURE" : Wrong login/password
@@ -27,6 +27,7 @@ POST -> Create a user if it not already exists
     In:
         email = Email and login of the user (must be unique)
         role = Role of the user (can be concatenated with -) 1=secrétaire, 2=resp_formation, 3=tuteur_univ, 4=étudiant, 5=tuteur_ent
+        name = Display name of the user
     Out:
         200 -> UID = <USER_ID> : The user already exists with the id USER_ID
         201 -> UID = <USER_ID> : The user has been successfully created with the id USER_ID

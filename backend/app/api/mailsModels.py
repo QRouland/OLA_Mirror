@@ -63,6 +63,8 @@ def getMailContent(mail_type, args):
     else:
         raise Exception("Unknown mail type !")
 
+    obj = mail[0]
+    content = str(mail[1])
     for key, value in args.items():
-        mail[1].replace("#" + key, value)
-    return mail
+        content = content.replace("#" + key, value)
+    return (obj, content)

@@ -14,4 +14,5 @@ api.add_resource(UserGroupsAPI, '/api/userGroups')
 api.add_resource(UserAPI, '/api/user', '/api/user/byuid/<int:uid>', '/api/user/byemail/<string:email>',
                  '/api/user/byhash/<string:hashcode>')
 api.add_resource(GroupAPI, '/api/group', '/api/group/bygid/<int:gid>', '/api/group/byname/<string:name>')
-api.add_resource(LivretAPI, '/api/livret', '/api/livret/byuid/<int:uid>')
+api.add_resource(LivretAPI, '/api/livret', '/api/livret/bylid/<int:lid>',
+                 '/api/livret/bytutorship/<int:group_id>/<int:student_id>')

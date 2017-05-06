@@ -7,11 +7,13 @@ from app.api.LoginAPI import login_required
 from app.model import Roles, getUser, hashExists, USER
 from app.utils import checkParams, get_random_string
 
+
 class UserAPI(Resource):
     """
         User Api Resource
     """
-    @login_required(roles=[Roles.resp_formation])
+
+    @login_required(roles=[Roles.resp_formation, Roles.etudiant])
     def post(self):
         args = request.get_json(cache=False, force=True)
         if not checkParams(['role', 'email', 'name'], args):

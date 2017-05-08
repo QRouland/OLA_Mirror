@@ -35,18 +35,18 @@ class LivretAPI(Resource):
 
         group = getGroup(gid=group_id)
         if group is None:
-            return {"ERROR": "This group does not exists !"}, 405
+            return {"ERROR": "This group with id " + str(group_id) + "does not exists !"}, 405
 
         tutorship = getTutorship(gid=group_id, student=user["id"])
 
         if tutorship is None:
-            return {"ERROR": "This student is not in this group !"}, 405
+            return {"ERROR": "The current student is not registered in the group" + str(group_id) + " !"}, 405
 
         tutorship_id = tutorship["id"]
 
         livret = getLivret(group_id=group_id, student_id=user["id"])
         if livret is not None:
-            return {"ERROR": "This livret already exists !"}, 405
+            return {"LID": livret["id"]}, 200
 
         user = getUser(uid=etutor_id)
         if user is None:

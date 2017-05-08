@@ -2,6 +2,9 @@
 LoginAPI (api/login)
 #######################
 POST -> Authentication method
+    In:
+        email = Email and login of the user (must be unique)
+        password = Password of the user (secured by HTTPS)
     Out:
         200 -> AUTH_RESULT = "OK" : Authentication sucessful
         401 -> AUTH_RESULT = "AUTHENTICATION_FAILURE" : Wrong login/password
@@ -99,3 +102,48 @@ OPTIONS -> Add pairs of users (student/tutor) to the group
         400 -> ERROR = "A student can't be a tutor !" : The given USER_ID for tutor have the "student" role (4) and so can't be a tutor
         405 -> ERROR = "This group doesn't exists !" : Bad GROUP_ID provided
         409 -> ERROR = "Pairs are incorrectly formed !" : Bad syntax in pairs table
+
+########################
+LivretAPI (api/livret)
+########################
+POST -> Create a livret if it not already exists
+    In:
+        group_id = Id of the group where this livret should be inserted in (we must have only one livret per student in a single group)
+        etutor_id = UID of the company tutor
+        company_name = Name of the company
+        company_address = Mail address of the company
+        contract_type = Type of the internship contract (1 = contrat d'alternance, 2 = contrat de professionnalisation, 3 = stage)
+        contract_start = Date of the contract's beginning (format : dd-mm-yyyy)
+        contract_end = Date of the contract's end (format : dd-mm-yyyy)
+        description = Description of the internship missions and activities overview
+    Out:
+        200 -> LID = <LIVRET_ID> : The livret already exists with the id LIVRET_ID
+        201 -> LID = <LIVRET_ID> : The livret has been successfully created with the id LIVRET_ID
+        400 -> ERROR = "One or more parameters are missing" : Bad request
+        400 -> ERROR = "The user with id <USER_ID> doesn't exists !" : The given USER_ID for etutor is not found
+        400 -> ERROR = "An etutor must have the 'etutor' role !" : The given USER_ID for etutor doesn't have the "etutor" role (5)
+        400 -> ERROR = "The contract start can't be after its end !" : The given contract's end date is anterior to it's beginning
+        405 -> ERROR = "The group with id GROUP_ID doesn't exists !" : The given GROUP_ID is not found
+        405 -> ERROR = "The The current student is not registered in the group <GROUP_ID> !" : The currently logged student is not affected to the specified GROUP_ID
+
+PUT -> Modify an existing livret
+    In: (Suffix = /bylid/<LIVRET_ID>)
+        etutor_id = UID of the company tutor
+        company_name = Name of the company
+        company_address = Mail address of the company
+        contract_type = Type of the internship contract (1 = contrat d'alternance, 2 = contrat de professionnalisation, 3 = stage)
+        contract_start = Date of the contract's beginning (format : dd-mm-yyyy)
+        contract_end = Date of the contract's end (format : dd-mm-yyyy)
+        description = Description of the internship missions and activities overview
+    Out:
+        200 -> LID = <LIVRET_ID> : The livret has been modified successfully with the id LIVRET_ID
+        400 -> ERROR = "One or more parameters are missing !" : Bad request
+        400 -> ERROR = "The user with id <USER_ID> doesn't exists !" : The given USER_ID for etutor is not found
+        400 -> ERROR = "An etutor must have the 'etutor' role !" : The given USER_ID for etutor doesn't have the "etutor" role (5)
+        400 -> ERROR = "The contract start can't be after its end !" : The given contract's end date is anterior to it's beginning
+        405 -> ERROR = "This group doesn't exists !" : Bad LIVRET_ID provided
+
+GET -> Getting specified livret infos
+    In: (Suffixes = /bylid/<GROUP_ID> | /bytutorship/<GROUP_ID>/<STUDENT_ID> )
+    Out:
+        200 -> LIVRET = <LIVRET_OBJECT>|null : Dictionary containing livret infos or null

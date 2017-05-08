@@ -42,6 +42,25 @@ _ETUTOR_ADDED = (
                                                      "maintenant accéder à votre compte en vous rendant à l'adresse : <br/>"
                                                      "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
 
+_NEW_PERIOD = (
+    "Nouvelle période ouverte dans OLA !", "Bonjour,<br/><p>Une nouvelle période vient d'être crée sur l'Outil du "
+                                           "Livret de l'Alternant dans le groupe <b>#GROUPE</b>. Vous pouvez dès "
+                                           "maintenant entrer vos commentaires en vous rendant à l'adresse : <br/>"
+                                           "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
+
+_STUD_COMMENT_ADDED = (
+    "Livret de l'alternant mis à jour !", "Bonjour,<br/><p>#ETUDIANT vient de mettre à jour son livret sur l'Outil du "
+                                          "Livret de l'Alternant. Vous pouvez dès "
+                                          "maintenant entrer à votre tour vos commentaires en vous rendant à l'adresse : <br/>"
+                                          "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
+
+_ETUTOR_COMMENT_ADDED = (
+    "Livret de l'alternant mis à jour !", "Bonjour,<br/><p>#TUTEUR vient de mettre à jour son livret sur l'Outil du "
+                                          "Livret de l'Alternant. Vous pouvez visualiser ces modifcations"
+                                          " en vous rendant à l'adresse : <br/>"
+                                          "<a href='#URL'>#URL</a></p><p>Bonne journée !</p>")
+
+
 
 def getMailContent(mail_type, args):
     if mail_type == "NEW_STUD_OF_GROUP":
@@ -60,8 +79,14 @@ def getMailContent(mail_type, args):
         mail = _NEW_ETUTOR_ADDED
     elif mail_type == "ETUTOR_ADDED":
         mail = _ETUTOR_ADDED
+    elif mail_type == "NEW_PERIOD":
+        mail = _NEW_PERIOD
+    elif mail_type == "STUD_COMMENT_ADDED":
+        mail = _STUD_COMMENT_ADDED
+    elif mail_type == "ETUTOR_COMMENT_ADDED":
+        mail = _ETUTOR_COMMENT_ADDED
     else:
-        raise Exception("Unknown mail type !")
+        raise Exception("Unknown mail type : " + str(mail_type))
 
     obj = mail[0]
     content = str(mail[1])

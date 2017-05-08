@@ -48,11 +48,15 @@ class LivretAPI(Resource):
         if livret is not None:
             return {"LID": livret["id"]}, 200
 
-        user = getUser(uid=etutor_id)
-        if user is None:
+        # On vérifie que l'utilisateur actuel a le droit de modifier ce livret
+        if user["id"] != livret["tutorship_id"]["student_id"]:
+            return {"ERROR": "UNAUTHORIZED"}, 401
+
+        user2 = getUser(uid=etutor_id)
+        if user2 is None:
             return {"ERROR": "The user with id " + str(etutor_id) + " does not exists !"}, 400
         else:
-            query = USER.select(USER.c.id == user["id"])
+            query = USER.select(USER.c.id == user2["id"])
             rows = query.execute()
             res = rows.first()
             if res.hash is not None and len(res.hash) > 0:
@@ -63,8 +67,8 @@ class LivretAPI(Resource):
                 mail = mailsModels.getMailContent("ETUTOR_ADDED", {"GROUPE": group["name"],
                                                                    "URL": getParam('OLA_URL')})
 
-            mails.append((user["email"], mail))
-            if str(Roles.tuteur_entreprise) not in user['role'].split('-'):
+            mails.append((user2["email"], mail))
+            if str(Roles.tuteur_entreprise) not in user2['role'].split('-'):
                 return {"ERROR": "The user with id " + str(etutor_id) +
                                  " doesn't have the 'etutor' role (" + str(Roles.tuteur_entreprise) + ") !"}, 400
 
@@ -107,6 +111,11 @@ class LivretAPI(Resource):
         livret = getLivret(lid=lid)
         if livret is None:
             return {"ERROR": "This livret does not exists !"}, 405
+
+        # On vérifie que l'utilisateur actuel a le droit de modifier ce livret
+        user = session.get("user")
+        if user["id"] != livret["tutorship_id"]["student_id"]:
+            return {"ERROR": "UNAUTHORIZED"}, 401
 
         user = getUser(uid=etutor_id)
         if user is None:

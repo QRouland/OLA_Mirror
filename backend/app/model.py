@@ -130,6 +130,19 @@ def getLivret(lid=0, group_id=0, student_id=0):
             return None
 
 
+def getPeriod(pid):
+    query = PERIOD.select(PERIOD.c.id == pid)
+    rows = query.execute()
+    res = rows.first()
+
+    if res is not None:
+        return {"id": res.id, "livret_id": res.livret_id, "type": res.type, "start": res.start.strftime('%d-%m-%Y'),
+                "end": res.end.strftime('%d-%m-%Y'), "student_desc": res.student_desc, "etutor_desc": res.etutor_desc,
+                "ressources_dir": res.ressources_dir}
+    else:
+        return None
+
+
 def hashExists(test):
     query = USER.select(USER.c.hash == test)
     rows = query.execute()
@@ -143,3 +156,8 @@ class Roles:
     tuteur_univ = 3
     etudiant = 4
     tuteur_entreprise = 5
+
+
+class TypesPeriode:
+    universitaire = 1
+    entreprise = 2

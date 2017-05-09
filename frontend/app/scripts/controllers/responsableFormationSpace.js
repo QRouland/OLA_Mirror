@@ -12,9 +12,9 @@
                 function init() {
                     $scope.selectedIndex = 0;
                     var tabs = [
-                    {//periode 1
+                    {//formation 1
                         "id":1,
-                      "title": 'One',
+                      "title": 'M2 ICE 16-17',
                       "periodes": [//periodes pour tab0
                           {"id":1, "plages": [//Plage pour periode 1
                             {"id": 0,"name": "null"}
@@ -22,13 +22,20 @@
                             
                           }
                         ],
-                      "students": [ {"face" : imagePath, "nom_prenom": 'Normand Léa'} ]
+                      "students": [ {"face" : imagePath, "nom_prenom": 'Normand Léa'} ],
+                      "pagesLivret": [
+                        {"titre" : "Titre 1", "lienApercu": '#', "idMaj_ou_Supp": 1 },
+                        {"titre" : "Titre 2", "lienApercu": '#', "idMaj_ou_Supp": 2 },
+                        {"titre" : "Titre 3", "lienApercu": '#', "idMaj_ou_Supp": 3 }
+                      ]
+                      
                     },
-                    {//periode 2
+                    {//formation 2
                         "id":2,
-                      "title": 'Two',
+                      "title": 'M2 ISMAG 16-17',
                       "periodes": [],
-                      "students": []
+                      "students": [],
+                      "pagesLivret": []
                     }],
                     selected = null,
                     previous = null;

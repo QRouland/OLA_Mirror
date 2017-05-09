@@ -19,7 +19,7 @@
           <md-button class="md-primary">+</md-button>
           <md-button class="md-primary" ng-click="removeTab( selectedIndex )" ng-disabled="tabs.length <= 1">-</md-button>
           
-          <md-tab ng-repeat="tab in tabs" ng-disabled="tab.disabled" label="{{tab.title}}" style="height : 100vh">
+          <md-tab ng-repeat="tab in tabs" ng-disabled="tab.disabled" label="{{tab.title}}">
             
             <div class="demo-tab tab{{$index%4}}" style="padding: 25px; text-align: center;">
               
@@ -32,22 +32,20 @@
                       <md-button class="md-raised md-primary" ng-click="addRecordPlage(tab.id, periode.id)">Créer une plage de saisie</md-button>
                       
                       <div class="div_plages_de_saisies" ng-repeat="plage in periode.plages">
-                        <form class="period_forms" name="period_form1">
+                        <form class="period_forms">
                           <div layout-gt-sm="row">
-                            <md-input-container md-no-float class="md-block" flex-gt-sm>
+                            <div flex-gt-xs>
                               <md-select name="type" ng-model="periode.type" required placeholder='Type de la période'>
                                 <md-option value="entreprise">Entreprise</md-option>
                                 <md-option value="formation">Formation</md-option>
                               </md-select>
-                            </md-input-container>
-                            <md-input-container class="md-block" flex-gt-sm>
-                              <label>Date de début</label>
-                              <md-datepicker ng-model="user.submissionDateBegin"></md-datepicker>
-                            </md-input-container>
-                            <md-input-container class="md-block" flex-gt-sm>
-                              <label>Date de fin</label>
-                              <md-datepicker ng-model="user.submissionDateEnd"></md-datepicker>
-                            </md-input-container>
+                            </div>
+                            <div flex-gt-xs>
+                              <md-datepicker ng-model="ctrl.myDateDeb" md-placeholder="Date de début"></md-datepicker>
+                            </div>
+                            <div flex-gt-xs>
+                              <md-datepicker ng-model="ctrl.myDateFin" md-placeholder="Date de fin"></md-datepicker>
+                            </div>
                           </div>
                         </form>
                       </div>
@@ -94,7 +92,26 @@
                     
                   </form>
                   
-                  <form name="livret_form"></form>
+                  <form name="livret_form">
+                    <h2>Pages du livret et ordonnancement</h2>
+                    <md-list-item class="md-3-line" ng-repeat="item in tab.pagesLivret" >
+                      <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.titre }}</h3>
+                      </div>
+                      <div class="md-list-item-text" layout="column">
+                        <h3><a href="{{ item.lienApercu }}" >Aperçu de la page</a></h3>
+                      </div>
+                      <div class="md-list-item-text" layout="column">
+                        <md-button class="md-raised md-primary">Mettre à jour</md-button>
+                      </div>
+                      <div class="md-list-item-text" layout="column">
+                        <md-button class="md-raised md-warn">Supprimer</md-button>
+                      </div>
+                      <div class="md-list-item-text" layout="column">
+                        <md-button class="md-secondary">Respond</md-button>
+                      </div>
+                    </md-list-item>  
+                  </form>
                 </div>
                 </md-content>
               </div>

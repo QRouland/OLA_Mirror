@@ -1,29 +1,29 @@
-import os
-
-from flask import request
 from flask_restful import Resource
 from flask_restful.reqparse import RequestParser
+from app.tools.LibPdf import delete_file
 from model import getParam
+from werkzeug.utils import secure_filename
 
 from app.model import getGroup
-from app.tools.LibPdf import delete_file, upload_file, allowed_file
+from app.tools.LibPdf import upload_file, allowed_file
+from app.api.LoginAPI import login_required
 
+import os
+import request
 
 class PdfAPI(Resource):
     """
         Pdf Api Resource
     """
-
+    @login_required()
     def delete(self):
         parser = RequestParser()
         parser.add_argument('templateName', required=True, help="Template name is required !")
         args = parser.parse_args()
 
-        if ".." in args:
-            return {"msg": ".. not allowed in path"}, 400
+        delete_file(os.path.join(getParam('TEMPLATES_DIRECTORY'), secure_filename(args['templateName'])))
 
-        delete_file(os.path.join(getParam('TEMPLATES_DIRECTORY'), args['templateName']))
-
+    @login_required()
     def post(self):
         """
         Upload d'un template

@@ -75,13 +75,70 @@ def getGroup(gid=0, name=""):
             return None
 
 
-def getTutorshipForStudent(gid, student):
-    query = TUTORSHIP.select(and_(TUTORSHIP.c.group_id == gid, TUTORSHIP.c.student_id == student))
+def getTutorship(tid=0, gid=0, student=0):
+    if tid == 0 and gid == 0 and student == 0:
+        raise Exception("getGroup must be called with at least one argument !")
+    else:
+        if gid != 0:
+            query = TUTORSHIP.select(and_(TUTORSHIP.c.group_id == gid, TUTORSHIP.c.student_id == student))
+            rows = query.execute()
+            res = rows.first()
+        elif tid != 0:
+            query = TUTORSHIP.select(TUTORSHIP.c.id == tid)
+            rows = query.execute()
+            res = rows.first()
+        else:
+            raise Exception("getTutorship must be called with two parameter for group+student search !")
+
+        if res is not None:
+            return {"id": res.id, "group_id": getGroup(gid=res.group_id), "student_id": getUser(uid=res.student_id),
+                    "ptutor_id": getUser(uid=res.ptutor_id)}
+        else:
+            return None
+
+
+def getLivret(lid=0, group_id=0, student_id=0):
+    res = None
+
+    if lid == 0 and student_id == "":
+        raise Exception("getLivret must be called with at least one argument !")
+    else:
+        if lid != 0:
+            query = LIVRET.select(LIVRET.c.id == lid)
+            rows = query.execute()
+            res = rows.first()
+
+        elif student_id != 0 and group_id != 0:
+            tutorship = getTutorship(gid=group_id, student=student_id)
+            if tutorship is None:
+                return None
+            query = LIVRET.select(LIVRET.c.tutorship_id == tutorship["id"])
+            rows = query.execute()
+            res = rows.first()
+        else:
+            raise Exception("getLivret must be called with two parameter for group+student search !")
+
+        if res is not None:
+            return {"id": res.id, "tutorship_id": getTutorship(tid=res.tutorship_id),
+                    "etutor_id": getUser(uid=res.etutor_id), "company_name": res.company_name,
+                    "company_address": res.company_address, "contract_type": res.contract_type,
+                    "contract_start": res.contract_start.strftime('%d-%m-%Y'),
+                    "contract_end": res.contract_end.strftime('%d-%m-%Y'),
+                    "ressources_dir": res.ressources_dir, "opened": res.opened,
+                    "expire": res.expire.strftime('%d-%m-%Y')}
+        else:
+            return None
+
+
+def getPeriod(pid):
+    query = PERIOD.select(PERIOD.c.id == pid)
     rows = query.execute()
     res = rows.first()
+
     if res is not None:
-        return {"id": res.id, "group_id": getGroup(gid=res.group_id), "student_id": getUser(uid=res.student_id),
-                "ptutor_id": getUser(uid=res.ptutor_id)}
+        return {"id": res.id, "livret_id": res.livret_id, "type": res.type, "start": res.start.strftime('%d-%m-%Y'),
+                "end": res.end.strftime('%d-%m-%Y'), "student_desc": res.student_desc, "etutor_desc": res.etutor_desc,
+                "ressources_dir": res.ressources_dir}
     else:
         return None
 
@@ -91,3 +148,16 @@ def hashExists(test):
     rows = query.execute()
     res = rows.first()
     return res is not None
+
+
+class Roles:
+    secretaire = 1
+    resp_formation = 2
+    tuteur_univ = 3
+    etudiant = 4
+    tuteur_entreprise = 5
+
+
+class TypesPeriode:
+    universitaire = 1
+    entreprise = 2

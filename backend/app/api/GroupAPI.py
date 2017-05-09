@@ -3,8 +3,9 @@ import os
 from flask_restful import Resource, request
 
 from app.api import mailsModels
-from app.model import *
-from app.utils import *
+from app.api.LoginAPI import login_required
+from app.model import Roles, getGroup, getParam, getUser, USER, GROUP, TUTORSHIP
+from app.utils import send_mail, checkParams
 
 
 class GroupAPI(Resource):
@@ -12,6 +13,7 @@ class GroupAPI(Resource):
         Group Api Resource
     """
 
+    @login_required(roles=[Roles.resp_formation])
     def post(self):
         args = request.get_json(cache=False, force=True)
         if not checkParams(['name', 'year', 'class_short', 'class_long', 'department', 'resp_id', 'sec_id'], args):
@@ -47,8 +49,8 @@ class GroupAPI(Resource):
                                                                     "URL": getParam('OLA_URL')})
 
             mails.append((user["email"], mail))
-            if "2" not in user['role'].split('-'):
-                role = user['role'] + "-2"
+            if str(Roles.resp_formation) not in user['role'].split('-'):
+                role = user['role'] + "-" + str(Roles.resp_formation)
                 query = USER.update().values(role=role).where(USER.c.id == resp_id)
                 query.execute()
 
@@ -68,8 +70,8 @@ class GroupAPI(Resource):
                                                                    "URL": getParam('OLA_URL')})
 
             mails.append((user["email"], mail))
-            if "1" not in user['role'].split('-'):
-                role = user['role'] + "-1"
+            if str(Roles.secretaire) not in user['role'].split('-'):
+                role = user['role'] + "-" + str(Roles.secretaire)
                 query = USER.update().values(role=role).where(USER.c.id == sec_id)
                 query.execute()
 
@@ -85,6 +87,7 @@ class GroupAPI(Resource):
 
         return {"GID": res.lastrowid}, 201
 
+    @login_required(roles=Roles.resp_formation)
     def put(self, gid):
         args = request.get_json(cache=False, force=True)
         if not checkParams(['name', 'year', 'class_short', 'class_long', 'department', 'resp_id', 'sec_id'], args):
@@ -124,8 +127,8 @@ class GroupAPI(Resource):
                                                                     "URL": getParam('OLA_URL')})
 
             mails.append((user["email"], mail))
-            if "2" not in user['role'].split('-'):
-                role = user['role'] + "-2"
+            if str(Roles.resp_formation) not in user['role'].split('-'):
+                role = user['role'] + "-" + str(Roles.resp_formation)
                 query = USER.update().values(role=role).where(USER.c.id == resp_id)
                 query.execute()
 
@@ -145,8 +148,8 @@ class GroupAPI(Resource):
                                                                    "URL": getParam('OLA_URL')})
 
             mails.append((user["email"], mail))
-            if "1" not in user['role'].split('-'):
-                role = user['role'] + "-1"
+            if str(Roles.secretaire) not in user['role'].split('-'):
+                role = user['role'] + "-" + str(Roles.secretaire)
                 query = USER.update().values(role=role).where(USER.c.id == sec_id)
                 query.execute()
 
@@ -165,12 +168,14 @@ class GroupAPI(Resource):
 
         return {"GID": gid}, 200
 
+    @login_required()
     def get(self, gid=0, name=""):
         if gid > 0:
             return {'GROUP': getGroup(gid=gid)}, 200
         elif name != "":
             return {'GROUP': getGroup(name=name)}, 200
 
+    @login_required(roles=Roles.resp_formation)
     def options(self, gid):
         args = request.get_json(cache=False, force=True)
         if not checkParams(['pairs'], args):
@@ -187,16 +192,16 @@ class GroupAPI(Resource):
                 stud = getUser(uid=p[0])
                 if stud is None:
                     return {"ERROR": "The user with id " + str(p[0]) + " does not exists !"}, 400
-                elif stud['role'] != "4":
+                elif stud['role'] != str(Roles.etudiant):
                     return {"ERROR": "A student must have the 'student' role !"}, 400
 
                 tutor = getUser(uid=p[1])
                 if tutor is None:
                     return {"ERROR": "The user with id " + str(p[1]) + " does not exists !"}, 400
-                elif tutor['role'] == "4":
+                elif tutor['role'] == str(Roles.etudiant):
                     return {"ERROR": "A student can't be a tutor !"}, 400
                 elif "3" not in tutor['role'].split('-'):
-                    role = tutor['role'] + "-3"
+                    role = tutor['role'] + "-" + str(Roles.tuteur_univ)
                     query = USER.update().values(role=role).where(USER.c.id == p[1])
                     query.execute()
             except IndexError:

@@ -1,7 +1,7 @@
 from flask import session
 from flask_restful import Resource
 
-from app.model import *
+from app.model import LIVRET, TUTORSHIP, and_
 
 
 class UserInfoAPI(Resource):
@@ -18,7 +18,6 @@ class UserGroupsAPI(Resource):
     """
         UserGroups Api Resource
     """
-
     def get(self):
         user = session.get("user", None)
         if user is not None:

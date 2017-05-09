@@ -45,3 +45,9 @@ def after_login():
 
 # import api resources
 importlib.import_module("app.urls")
+
+
+@app.teardown_request
+def shutdown_session(exception=None):
+    engine.dispose()
+    db.session.remove()

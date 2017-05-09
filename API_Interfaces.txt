@@ -23,6 +23,7 @@ GET -> Get the current logged user, return None if no one is connected
     Out:
         200 -> USER = <USER_OBJECT>|null : Dictionary containing user infos or null
 
+
 ########################
 UserAPI (api/user)
 ########################
@@ -51,6 +52,7 @@ GET -> Getting specified user infos
     In: (Suffixes = /byuid/<USER_ID> | /byemail/<USER_EMAIL>)
     Out:
         200 -> USER = <USER_OBJECT>|null : Dictionary containing user infos or null
+
 
 ########################
 GroupAPI (api/group)
@@ -103,6 +105,7 @@ OPTIONS -> Add pairs of users (student/tutor) to the group
         405 -> ERROR = "This group doesn't exists !" : Bad GROUP_ID provided
         409 -> ERROR = "Pairs are incorrectly formed !" : Bad syntax in pairs table
 
+
 ########################
 LivretAPI (api/livret)
 ########################
@@ -147,3 +150,46 @@ GET -> Getting specified livret infos
     In: (Suffixes = /bylid/<GROUP_ID> | /bytutorship/<GROUP_ID>/<STUDENT_ID> )
     Out:
         200 -> LIVRET = <LIVRET_OBJECT>|null : Dictionary containing livret infos or null
+
+
+########################
+PeriodAPI (api/period)
+########################
+POST -> Create a period for all livrets in a group
+    In:
+        group_id = Id of the group where this period should be inserted in
+        period_type = Type of the period (1 = universitaire, 2 = entreprise)
+        start = Date of the period's beginning (format : dd-mm-yyyy)
+        end = Date of the period's end (format : dd-mm-yyyy)
+    Out:
+        200 -> RESULT = OK : The period has been successfully created in all the livrets in the given group
+        400 -> ERROR = "One or more parameters are missing" : Bad request
+        401 -> ERROR = "UNAUTHORIZED" : The current user is not allowed to modify this group (only the group's resp can do it)
+        400 -> ERROR = "The period's start can't be after its end !" : The given period's end date is anterior to it's beginning
+        405 -> ERROR = "The group with id GROUP_ID doesn't exists !" : The given GROUP_ID is not found
+
+PUT -> Add the comments of a user in an existing period
+    In: (Suffix = /bypid/<PERIOD_ID>)
+        text = Comment added by the user about the period (student or etutor)
+    Out:
+        200 -> PID = <PERIOD_ID> : The period has been modified successfully with the id PERIOD_ID
+        400 -> ERROR = "One or more parameters are missing !" : Bad request
+        400 -> ERROR = "This period doesn't exists !" : Bad PERIOD_ID provided
+        401 -> ERROR = "UNAUTHORIZED" : The current user is not allowed to modify this group (only the student and his etutor can do it)
+        405 -> ERROR = "A tutor can't modify a university period !" : A tutor can't modify a university period :)
+
+GET -> Getting specified period infos
+    In: (Suffix = /bypid/<PERIOD_ID>)
+    Out:
+        200 -> PERIOD = <PERIOD_OBJECT>|null : Dictionary containing period infos or null
+
+
+########################
+GetAllAPI (api/getAll)
+########################
+GET -> Getting specified period infos
+    In: (Suffix = /<WHAT>/<VALUE>)
+        Parameters for <WHAT>/<VALUE> :
+            periodsOfLivret/<LIVRET_ID> : Returns all the periods associated to the given <LIVRET_ID>
+    Out:
+        200 -> RESULT = <ARRAY_OF_OBJECTS>

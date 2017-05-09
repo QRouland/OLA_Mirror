@@ -94,7 +94,7 @@ class PeriodAPI(Resource):
             query = PERIOD.update().values(student_desc=text).where(PERIOD.c.id == pid)
         else:  # Sinon on vérifie que c'est une période d'entreprise
             if period["type"] == TypesPeriode.universitaire:
-                return {"ERROR": "A tutor can't modify a university period !"}
+                return {"ERROR": "A tutor can't modify a university period !"}, 405
 
             mail = mailsModels.getMailContent("ETUTOR_COMMENT_ADDED", {"TUTEUR": user["name"],
                                                                        "URL": getParam('OLA_URL')})
